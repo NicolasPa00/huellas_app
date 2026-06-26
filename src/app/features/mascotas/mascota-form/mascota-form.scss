@@ -1,0 +1,105 @@
+:host {
+  display: block;
+}
+
+mat-progress-bar {
+  margin-bottom: var(--hc-space-sm);
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+  padding-top: var(--hc-space-xs);
+}
+
+.grupo {
+  font: var(--hc-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  color: var(--hc-color-primary-strong);
+  margin: var(--hc-space-xs) 0 calc(-1 * var(--hc-space-xs));
+}
+
+.grupo:first-child {
+  margin-top: 0;
+}
+
+.full {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hc-space-md);
+}
+
+mat-slide-toggle {
+  margin: calc(-1 * var(--hc-space-xs)) 0;
+}
+
+/* Edad calculada (no editable) — se ve como un campo informativo. */
+.edad-calculada {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--hc-space-sm) var(--hc-space-md);
+  background: var(--hc-color-primary-soft);
+  border-radius: var(--hc-radius-md);
+}
+.edad-calculada__label {
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-subtle);
+}
+.edad-calculada__valor {
+  font: var(--hc-text-label);
+  font-weight: 700;
+  color: var(--hc-color-primary-strong);
+}
+
+/* Carga de fotografía con previsualización. */
+.foto-upload {
+  display: flex;
+  align-items: center;
+  gap: var(--hc-space-md);
+}
+.foto-upload__preview {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: var(--hc-radius-md);
+  border: 1px dashed var(--hc-color-border);
+  background: var(--hc-color-surface-2);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.foto-upload__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.foto-upload__preview mat-icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  color: var(--hc-color-text-subtle);
+}
+.foto-upload__controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--hc-space-xs);
+}
+.foto-upload__hint {
+  margin: 2px 0 0;
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

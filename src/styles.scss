@@ -1,0 +1,192 @@
+@use '@angular/material' as mat;
+@use './styles/tokens';
+
+/* ============================================================
+   Tema Material 3 · Huellas Conectadas
+   Paletas base cercanas a la marca; los tokens --hc-* y los
+   overrides --mat-sys-* (en _tokens.scss) afinan a esmeralda/coral.
+   ============================================================ */
+html {
+  color-scheme: light;
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$green-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: (
+        brand-family: 'Nunito, sans-serif',
+        plain-family: 'Nunito, sans-serif',
+      ),
+      density: 0,
+    )
+  );
+}
+
+/* ===== Base ===== */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font: var(--hc-text-body);
+  color: var(--hc-color-text);
+  background: var(--hc-color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===== Jerarquía tipográfica (utilidades) ===== */
+.hc-display { font: var(--hc-text-display); margin: 0; }
+.hc-h1 { font: var(--hc-text-h1); margin: 0; }
+.hc-h2 { font: var(--hc-text-h2); margin: 0; }
+.hc-h3 { font: var(--hc-text-h3); margin: 0; }
+.hc-body { font: var(--hc-text-body); margin: 0; }
+.hc-label { font: var(--hc-text-label); margin: 0; }
+.hc-caption { font: var(--hc-text-caption); color: var(--hc-color-text-muted); margin: 0; }
+.hc-muted { color: var(--hc-color-text-muted); }
+
+/* ===== Botón secundario de marca (coral) sobre Material ===== */
+.hc-btn-coral.mat-mdc-unelevated-button,
+.hc-btn-coral.mat-mdc-raised-button {
+  --mdc-filled-button-container-color: var(--hc-color-secondary);
+  --mdc-filled-button-label-text-color: var(--hc-color-on-secondary);
+  --mat-mdc-button-persistent-ripple-color: #ffffff;
+}
+.hc-btn-coral.mat-mdc-unelevated-button:hover {
+  --mdc-filled-button-container-color: var(--hc-color-secondary-strong);
+}
+
+/* ===== Scrollbar sutil ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hc-color-border) transparent;
+}
+
+/* ============================================================
+   Tarjetas y diálogos: superficie blanca + radios de marca
+   ============================================================ */
+.mat-mdc-card {
+  --mdc-outlined-card-container-color: var(--hc-color-surface);
+  --mdc-elevated-card-container-color: var(--hc-color-surface);
+  --mdc-outlined-card-container-shape: var(--hc-radius-lg);
+  --mdc-outlined-card-outline-color: var(--hc-color-border);
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--hc-color-surface);
+  --mdc-dialog-container-shape: var(--hc-radius-lg);
+  --mdc-dialog-subhead-color: var(--hc-color-text);
+}
+
+/* Título del diálogo alineado con la jerarquía de la marca */
+.mat-mdc-dialog-container .mat-mdc-dialog-title {
+  font: var(--hc-text-h3);
+  font-weight: 800;
+  color: var(--hc-color-primary-strong);
+  padding: var(--hc-space-lg) var(--hc-space-lg) var(--hc-space-xs);
+}
+
+.mat-mdc-dialog-container .mat-mdc-dialog-content {
+  padding: 0 var(--hc-space-lg);
+  color: var(--hc-color-text);
+}
+
+.mat-mdc-dialog-container .mat-mdc-dialog-actions {
+  padding: var(--hc-space-md) var(--hc-space-lg) var(--hc-space-lg);
+  gap: var(--hc-space-sm);
+}
+
+/* Inputs: que el fondo del campo combine con la superficie clara */
+.mat-mdc-form-field {
+  --mat-sys-surface-container-highest: var(--hc-color-surface-2);
+}
+
+/* ============================================================
+   Layout de pantallas de autenticación (login/registro/etc.)
+   ============================================================ */
+.auth-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--hc-space-lg);
+  background: linear-gradient(
+    135deg,
+    var(--hc-color-primary) 0%,
+    var(--hc-color-primary-strong) 100%
+  );
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: var(--hc-space-xl) var(--hc-space-xl) var(--hc-space-lg);
+  border-radius: var(--hc-radius-lg);
+  box-shadow: var(--hc-shadow-lg);
+}
+
+.auth-card .brand {
+  text-align: center;
+  margin-bottom: var(--hc-space-lg);
+}
+
+.auth-card .brand .logo {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.auth-card .brand h1 {
+  font: var(--hc-text-h1);
+  margin: var(--hc-space-sm) 0 var(--hc-space-xs);
+  color: var(--hc-color-primary-strong);
+}
+
+.auth-card .brand p {
+  margin: 0;
+  color: var(--hc-color-text-muted);
+  font: var(--hc-text-body);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-sm);
+}
+
+.auth-form .full-width {
+  width: 100%;
+}
+
+.auth-actions {
+  margin-top: var(--hc-space-sm);
+}
+
+.auth-actions button {
+  width: 100%;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--hc-space-sm);
+  margin-top: var(--hc-space-md);
+  font: var(--hc-text-label);
+}
+
+.auth-links a {
+  color: var(--hc-color-primary);
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,57 @@
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (mascota(); as m) {
+  <h2 mat-dialog-title>{{ m.nombre }}</h2>
+
+  <mat-dialog-content>
+    <div class="foto">
+      @if (fotoPrincipal()) {
+        <img [src]="fotoPrincipal()" [alt]="m.nombre" />
+      } @else {
+        <mat-icon class="sin-foto">pets</mat-icon>
+      }
+      <span class="estado-badge">{{ estado() }}</span>
+    </div>
+
+    @if (m.descripcion) {
+      <p class="desc hc-body">{{ m.descripcion }}</p>
+    }
+
+    <h3 class="grupo">Datos básicos</h3>
+    <dl class="datos">
+      <div><dt>Especie</dt><dd>{{ especie() }}</dd></div>
+      <div><dt>Raza</dt><dd>{{ raza() }}</dd></div>
+      <div><dt>Sexo</dt><dd>{{ sexo() }}</dd></div>
+      <div><dt>Edad</dt><dd>{{ edad() }}</dd></div>
+    </dl>
+
+    <h3 class="grupo">Características</h3>
+    <dl class="datos">
+      <div><dt>Tamaño</dt><dd>{{ tamano() }}</dd></div>
+      <div><dt>Nivel de energía</dt><dd>{{ energia() }}</dd></div>
+      <div><dt>Peso</dt><dd>{{ m.peso_kg != null ? m.peso_kg + ' kg' : '—' }}</dd></div>
+      <div><dt>Esterilizado/a</dt><dd>{{ m.esterilizado ? 'Sí' : 'No' }}</dd></div>
+    </dl>
+
+    <h3 class="grupo">Salud</h3>
+    <dl class="datos">
+      <div><dt>Estado de vacunación</dt><dd>{{ vacunacion() }}</dd></div>
+      <div class="full"><dt>Estado de salud</dt><dd>{{ m.estado_salud || '—' }}</dd></div>
+    </dl>
+
+    @if (comportamientos().length) {
+      <h3 class="grupo">Comportamiento</h3>
+      <div class="chips">
+        @for (c of comportamientos(); track c) {
+          <span class="chip">{{ c }}</span>
+        }
+      </div>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" mat-dialog-close>Cerrar</button>
+  </mat-dialog-actions>
+}

@@ -1,0 +1,98 @@
+<div class="public-shell">
+  <!-- ===== Navbar de visitante ===== -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a class="brand" routerLink="/" (click)="cerrarMenu()">
+        <span class="brand__mark">🐾</span>
+        <span class="brand__name">Huellas Conectadas</span>
+      </a>
+
+      <button
+        class="navbar__burger"
+        mat-icon-button
+        type="button"
+        (click)="toggleMenu()"
+        aria-label="Menú"
+      >
+        <mat-icon>{{ menuAbierto() ? 'close' : 'menu' }}</mat-icon>
+      </button>
+
+      <nav class="navbar__menu" [class.navbar__menu--open]="menuAbierto()">
+        @for (item of nav; track item.link) {
+          <a
+            class="navbar__link"
+            [routerLink]="item.link"
+            routerLinkActive="navbar__link--active"
+            [routerLinkActiveOptions]="{ exact: item.exact }"
+            (click)="cerrarMenu()"
+          >
+            {{ item.label }}
+          </a>
+        }
+
+        <div class="navbar__actions">
+          <button mat-stroked-button color="primary" type="button" (click)="abrirIa()">
+            <mat-icon>auto_awesome</mat-icon>
+            Recomendación IA
+          </button>
+          <a mat-button routerLink="/login" (click)="cerrarMenu()">Iniciar sesión</a>
+          <a mat-flat-button color="primary" routerLink="/register" (click)="cerrarMenu()">
+            Registrarse
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Contenido ===== -->
+  <main class="public-main">
+    <router-outlet />
+  </main>
+
+  <!-- ===== Footer informativo ===== -->
+  <footer class="public-footer">
+    <div class="public-footer__inner">
+      <div class="public-footer__col public-footer__col--brand">
+        <a class="brand brand--footer" routerLink="/">
+          <span class="brand__mark">🐾</span>
+          <span class="brand__name">Huellas Conectadas</span>
+        </a>
+        <p class="public-footer__mision">{{ plataforma.mision }}</p>
+        <div class="public-footer__redes">
+          @for (red of redes; track red.nombre) {
+            <a [href]="red.url" target="_blank" rel="noopener" [attr.aria-label]="red.nombre">
+              <mat-icon>{{ red.icono }}</mat-icon>
+            </a>
+          }
+        </div>
+      </div>
+
+      <div class="public-footer__col">
+        <h4 class="public-footer__titulo">Enlaces rápidos</h4>
+        <a routerLink="/mascotas">Mascotas</a>
+        <a routerLink="/refugios">Refugios</a>
+        <a routerLink="/como-adoptar">Cómo adoptar</a>
+        <a routerLink="/como-adoptar" fragment="faq">Preguntas frecuentes</a>
+      </div>
+
+      <div class="public-footer__col">
+        <h4 class="public-footer__titulo">Plataforma</h4>
+        <a routerLink="/login">Iniciar sesión</a>
+        <a routerLink="/register">Registrar refugio</a>
+        <a [href]="'mailto:' + plataforma.email">{{ plataforma.email }}</a>
+        <span class="public-footer__muted">{{ plataforma.telefono }}</span>
+      </div>
+
+      <div class="public-footer__col">
+        <h4 class="public-footer__titulo">Legal</h4>
+        <a routerLink="/como-adoptar">Términos y condiciones</a>
+        <a routerLink="/como-adoptar">Política de privacidad</a>
+      </div>
+    </div>
+
+    <div class="public-footer__bottom">
+      <span>© {{ anio }} Huellas Conectadas · Bienestar animal</span>
+      <span>Hecho con 💚 para quienes buscan un hogar</span>
+    </div>
+  </footer>
+</div>

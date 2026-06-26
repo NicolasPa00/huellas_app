@@ -1,0 +1,91 @@
+<ui-page-header
+  titulo="Solicitudes recibidas"
+  descripcion="Gestiona las solicitudes de adopción de las mascotas de tus refugios."
+/>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && solicitudes().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="mark_email_unread"
+      titulo="Sin solicitudes por ahora"
+      mensaje="Cuando alguien solicite adoptar una de tus mascotas, aparecerá aquí."
+    />
+  </ui-card>
+}
+
+<div class="lista">
+  @for (s of solicitudes(); track s.id) {
+    <ui-card>
+      <div class="cab">
+        <div>
+          <h3 class="hc-h3">{{ s.mascota_nombre }}</h3>
+          <p class="refugio hc-caption"><mat-icon>home_work</mat-icon> {{ s.refugio_nombre }}</p>
+        </div>
+        <span class="estado" [class]="estadoClase(s.estado_codigo)">{{ s.estado }}</span>
+      </div>
+
+      <div class="cuerpo">
+        <div class="adoptante">
+          <p class="nombre">
+            {{ s.adoptante_nombre }} {{ s.adoptante_apellido }}
+            @if (s.es_publica) { <span class="badge-publica">Pública</span> }
+          </p>
+          <p class="hc-caption">{{ s.adoptante_email }}</p>
+          @if (s.adoptante_telefono) {
+            <p class="hc-caption"><mat-icon class="ic">call</mat-icon> {{ s.adoptante_telefono }}</p>
+          }
+          <p class="hc-caption">Solicitada el {{ s.fecha_solicitud | date: 'd MMM y' }}</p>
+          @if (s.mensaje) {
+            <p class="mensaje">“{{ s.mensaje }}”</p>
+          }
+        </div>
+
+        @if (puntaje(s.puntaje_compatibilidad) != null) {
+          <div class="compat">
+            <span class="compat__valor">{{ puntaje(s.puntaje_compatibilidad) }}%</span>
+            <span class="hc-caption">compatibilidad</span>
+          </div>
+        }
+      </div>
+
+      @if (s.formulario) {
+        <details class="formulario">
+          <summary><mat-icon>assignment</mat-icon> Ver solicitud de adopción</summary>
+          <dl class="formulario__datos">
+            @for (f of detalleFormulario(s.formulario); track f.etiqueta) {
+              <div><dt>{{ f.etiqueta }}</dt><dd>{{ f.valor }}</dd></div>
+            }
+          </dl>
+        </details>
+      }
+
+      @if (s.estado_codigo === 'PENDIENTE' || s.estado_codigo === 'EN_REVISION') {
+        <div class="acciones">
+          <button mat-stroked-button color="warn" [disabled]="procesando() === s.id"
+                  (click)="resolver(s, 'RECHAZAR')">
+            <mat-icon>close</mat-icon> Rechazar
+          </button>
+          <button mat-flat-button color="primary" [disabled]="procesando() === s.id"
+                  (click)="resolver(s, 'APROBAR')">
+            <mat-icon>check</mat-icon> Aprobar
+          </button>
+        </div>
+      } @else if (s.estado_codigo === 'APROBADA') {
+        <div class="acciones">
+          <button mat-stroked-button color="warn" [disabled]="procesando() === s.id"
+                  (click)="resolver(s, 'RECHAZAR')">
+            <mat-icon>close</mat-icon> Cancelar
+          </button>
+          <button mat-flat-button color="primary" [disabled]="procesando() === s.id"
+                  (click)="resolver(s, 'COMPLETAR')">
+            <mat-icon>verified</mat-icon> Confirmar adopción
+          </button>
+        </div>
+      }
+    </ui-card>
+  }
+</div>

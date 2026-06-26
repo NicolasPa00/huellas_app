@@ -1,0 +1,166 @@
+<ui-page-header
+  titulo="Mi perfil"
+  descripcion="Gestiona tus datos personales y preferencias de adopción."
+/>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<section class="page-body">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>{{ email() }}</mat-card-title>
+      <mat-card-subtitle>{{ roles().join(' · ') }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-tab-group>
+        <!-- ---------- Datos personales ---------- -->
+        <mat-tab label="Datos personales">
+          <form class="tab-form" [formGroup]="datosForm" (ngSubmit)="guardarDatos()">
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" />
+                @if (datosForm.controls.nombre.hasError('required')) {
+                  <mat-error>Requerido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Apellido</mat-label>
+                <input matInput formControlName="apellido" />
+                @if (datosForm.controls.apellido.hasError('required')) {
+                  <mat-error>Requerido</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput [value]="email()" disabled />
+                <mat-icon matSuffix>lock</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Telefono</mat-label>
+                <input matInput formControlName="telefono" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Documento de identidad</mat-label>
+                <input matInput formControlName="documento_identidad" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input matInput type="date" formControlName="fecha_nacimiento" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Direccion</mat-label>
+                <input matInput formControlName="direccion" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Ciudad</mat-label>
+                <input matInput formControlName="ciudad" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de vivienda</mat-label>
+                <mat-select formControlName="tipo_vivienda_id">
+                  <mat-option [value]="null">Sin especificar</mat-option>
+                  @for (item of catalogos()?.tiposVivienda; track item.id) {
+                    <mat-option [value]="item.id">{{ item.nombre }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="acciones">
+              <button
+                mat-flat-button
+                color="primary"
+                type="submit"
+                [disabled]="guardandoDatos()"
+              >
+                Guardar datos
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+
+        <!-- ---------- Preferencias ---------- -->
+        <mat-tab label="Preferencias de adopcion">
+          <form class="tab-form" [formGroup]="prefForm" (ngSubmit)="guardarPreferencias()">
+            <div class="grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Especie preferida</mat-label>
+                <mat-select formControlName="especie_id">
+                  <mat-option [value]="null">Sin preferencia</mat-option>
+                  @for (item of catalogos()?.especies; track item.id) {
+                    <mat-option [value]="item.id">{{ item.nombre }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tamano preferido</mat-label>
+                <mat-select formControlName="tamano_id">
+                  <mat-option [value]="null">Sin preferencia</mat-option>
+                  @for (item of catalogos()?.tamanos; track item.id) {
+                    <mat-option [value]="item.id">{{ item.nombre }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Nivel de energia</mat-label>
+                <mat-select formControlName="nivel_energia_id">
+                  <mat-option [value]="null">Sin preferencia</mat-option>
+                  @for (item of catalogos()?.nivelesEnergia; track item.id) {
+                    <mat-option [value]="item.id">{{ item.nombre }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Horas disponibles al dia</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  max="24"
+                  formControlName="horas_disponibles_dia"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="toggles">
+              <mat-slide-toggle formControlName="tiene_patio">Tengo patio</mat-slide-toggle>
+              <mat-slide-toggle formControlName="tiene_ninos">Hay ninos en casa</mat-slide-toggle>
+              <mat-slide-toggle formControlName="tiene_otras_mascotas">
+                Tengo otras mascotas
+              </mat-slide-toggle>
+              <mat-slide-toggle formControlName="experiencia_previa">
+                Experiencia previa con mascotas
+              </mat-slide-toggle>
+            </div>
+
+            <div class="acciones">
+              <button
+                mat-flat-button
+                color="primary"
+                type="submit"
+                [disabled]="guardandoPrefs()"
+              >
+                Guardar preferencias
+              </button>
+            </div>
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</section>

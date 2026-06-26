@@ -1,0 +1,78 @@
+<ui-page-header
+  titulo="Adoptantes"
+  descripcion="Personas que han adoptado una mascota de tus refugios. Envíales un seguimiento para verificar el bienestar de la mascota tras la adopción."
+/>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && adoptantes().length > 0) {
+  <div class="resumen">
+    <span class="resumen__chip"><mat-icon>diversity_1</mat-icon> {{ adoptantes().length }} adoptantes</span>
+    <span class="resumen__chip resumen__chip--ok"><mat-icon>task_alt</mat-icon> {{ completados() }} con seguimiento</span>
+    <span class="resumen__chip resumen__chip--pend"><mat-icon>hourglass_top</mat-icon> {{ pendientes() }} esperando respuesta</span>
+  </div>
+}
+
+@if (!cargando() && adoptantes().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="diversity_1"
+      titulo="Aún no hay adoptantes"
+      mensaje="Cuando confirmes una adopción (solicitud completada), el adoptante aparecerá aquí para hacerle seguimiento."
+    />
+  </ui-card>
+}
+
+<div class="lista">
+  @for (a of adoptantes(); track a.solicitud_id) {
+    <ui-card>
+      <div class="fila">
+        <!-- Mascota adoptada -->
+        <div class="mascota">
+          @if (a.mascota_foto) {
+            <img class="mascota__foto" [src]="a.mascota_foto" [alt]="a.mascota_nombre" />
+          } @else {
+            <div class="mascota__foto mascota__foto--ph"><mat-icon>pets</mat-icon></div>
+          }
+          <div>
+            <h3 class="hc-h3">{{ a.mascota_nombre }}</h3>
+            <p class="hc-caption">{{ a.especie }}@if (a.raza) { · {{ a.raza }} }</p>
+            <p class="hc-caption"><mat-icon class="ic">home_work</mat-icon> {{ a.refugio_nombre }}</p>
+          </div>
+        </div>
+
+        <!-- Adoptante -->
+        <div class="adoptante">
+          <p class="nombre">
+            {{ a.adoptante_nombre }} {{ a.adoptante_apellido }}
+            @if (a.es_publica) { <span class="badge-publica">Pública</span> }
+          </p>
+          @if (a.adoptante_email) { <p class="hc-caption"><mat-icon class="ic">mail</mat-icon> {{ a.adoptante_email }}</p> }
+          @if (a.adoptante_telefono) { <p class="hc-caption"><mat-icon class="ic">call</mat-icon> {{ a.adoptante_telefono }}</p> }
+          @if (a.adoptante_ciudad) { <p class="hc-caption"><mat-icon class="ic">place</mat-icon> {{ a.adoptante_ciudad }}</p> }
+          @if (a.fecha_adopcion) {
+            <p class="hc-caption">Adoptada el {{ a.fecha_adopcion | date: 'd MMM y' }}</p>
+          }
+        </div>
+
+        <!-- Estado del seguimiento -->
+        <div class="estado-col">
+          <span class="estado" [class]="estadoSeguimiento(a).clase">
+            <mat-icon>{{ estadoSeguimiento(a).icono }}</mat-icon>
+            {{ estadoSeguimiento(a).texto }}
+          </span>
+          @if (a.seguimiento_estado === 'COMPLETADO' && a.estado_bienestar) {
+            <span class="bienestar" [class]="bienestarClase(a.estado_bienestar)">
+              Bienestar: {{ bienestarTexto(a.estado_bienestar) }}
+            </span>
+          }
+          <button mat-flat-button color="primary" (click)="abrirSeguimiento(a)">
+            <mat-icon>fact_check</mat-icon> Seguimiento
+          </button>
+        </div>
+      </div>
+    </ui-card>
+  }
+</div>

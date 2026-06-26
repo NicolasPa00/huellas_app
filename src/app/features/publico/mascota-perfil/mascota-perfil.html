@@ -1,0 +1,148 @@
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (noEncontrada()) {
+  <div class="estado-vacio">
+    <mat-icon>sentiment_dissatisfied</mat-icon>
+    <h2 class="hc-h2">No encontramos esta mascota</h2>
+    <p class="hc-body">Puede que ya haya encontrado un hogar.</p>
+    <a mat-flat-button color="primary" routerLink="/mascotas">Ver otras mascotas</a>
+  </div>
+}
+
+@if (mascota(); as m) {
+  <nav class="migas">
+    <a routerLink="/mascotas"><mat-icon>arrow_back</mat-icon> Volver al catálogo</a>
+  </nav>
+
+  <div class="perfil">
+    <!-- ===== Galería ===== -->
+    <section class="galeria">
+      <div class="galeria__principal">
+        @if (fotoActiva()) {
+          <img [src]="fotoActiva()" [alt]="m.nombre" />
+        } @else {
+          <mat-icon class="sin-foto">pets</mat-icon>
+        }
+      </div>
+      @if (galeria().length > 1) {
+        <div class="galeria__miniaturas">
+          @for (f of galeria(); track f.id) {
+            <button
+              type="button"
+              class="miniatura"
+              [class.miniatura--activa]="fotoActiva() === f.url"
+              (click)="seleccionarFoto(f.url)"
+            >
+              <img [src]="f.url" [alt]="m.nombre" />
+            </button>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- ===== Datos principales ===== -->
+    <section class="info">
+      <div class="info__head">
+        <h1 class="hc-h1">{{ m.nombre }}</h1>
+        <span class="badge-estado">{{ m.estado }}</span>
+      </div>
+      <p class="info__sub hc-body">
+        {{ m.especie }}@if (m.raza) { · {{ m.raza }} } · {{ sexo() }}
+      </p>
+
+      <div class="datos-grid">
+        <div class="dato"><span class="dato__k">Edad</span><span class="dato__v">{{ edad() }}</span></div>
+        <div class="dato"><span class="dato__k">Tamaño</span><span class="dato__v">{{ m.tamano ?? '—' }}</span></div>
+        <div class="dato"><span class="dato__k">Energía</span><span class="dato__v">{{ m.nivel_energia ?? '—' }}</span></div>
+        <div class="dato"><span class="dato__k">Sexo</span><span class="dato__v">{{ sexo() }}</span></div>
+        <div class="dato"><span class="dato__k">Esterilizado</span><span class="dato__v">{{ m.esterilizado ? 'Sí' : 'No' }}</span></div>
+        <div class="dato"><span class="dato__k">Vacunación</span><span class="dato__v">{{ vacunacion() }}</span></div>
+        @if (m.peso_kg) {
+          <div class="dato"><span class="dato__k">Peso</span><span class="dato__v">{{ m.peso_kg }} kg</span></div>
+        }
+        <div class="dato"><span class="dato__k">Ubicación</span><span class="dato__v">{{ ubicacion() }}</span></div>
+      </div>
+
+      <div class="acciones">
+        <button mat-flat-button color="primary" (click)="adoptar()" [disabled]="m.estado_codigo !== 'DISPONIBLE'">
+          <mat-icon>favorite</mat-icon> Quiero adoptar
+        </button>
+        @if (m.refugio_email) {
+          <button mat-stroked-button (click)="preguntar()">
+            <mat-icon>chat</mat-icon> Hacer una pregunta
+          </button>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Historia / descripción ===== -->
+  @if (m.descripcion || m.estado_salud || m.comportamientos.length) {
+    <ui-card>
+      <h2 class="hc-h2 seccion-titulo">Su historia</h2>
+      @if (m.descripcion) {
+        <p class="hc-body">{{ m.descripcion }}</p>
+      }
+      @if (m.estado_salud) {
+        <p class="hc-body"><strong>Salud:</strong> {{ m.estado_salud }}</p>
+      }
+      @if (m.comportamientos.length) {
+        <div class="comportamientos">
+          <span class="hc-label">Necesidades / comportamiento:</span>
+          @for (c of m.comportamientos; track c.codigo) {
+            <span class="chip">{{ c.nombre }}</span>
+          }
+        </div>
+      }
+      @if (m.vacunas.length) {
+        <div class="comportamientos">
+          <span class="hc-label">Vacunas:</span>
+          @for (v of m.vacunas; track v.nombre) {
+            <span class="chip chip--ok">{{ v.nombre }}</span>
+          }
+        </div>
+      }
+    </ui-card>
+  }
+
+  <!-- ===== Refugio ===== -->
+  <ui-card>
+    <div class="refugio">
+      <div class="refugio__logo">{{ m.refugio_nombre.charAt(0) }}</div>
+      <div class="refugio__info">
+        <div class="refugio__nombre">
+          <h3 class="hc-h3">{{ m.refugio_nombre }}</h3>
+          @if (m.refugio_verificado) { <mat-icon class="verificado" title="Refugio verificado">verified</mat-icon> }
+        </div>
+        @if (m.refugio_descripcion) { <p class="hc-caption">{{ m.refugio_descripcion }}</p> }
+        <div class="refugio__metricas">
+          <span><mat-icon>place</mat-icon> {{ ubicacion() }}</span>
+          <span><mat-icon>calendar_month</mat-icon> {{ aniosRefugio() }} año(s) de funcionamiento</span>
+          <span><mat-icon>favorite</mat-icon> {{ m.refugio_adopciones }} adopciones</span>
+        </div>
+        <div class="refugio__contacto">
+          @if (m.refugio_telefono) { <span><mat-icon>call</mat-icon> {{ m.refugio_telefono }}</span> }
+          @if (m.refugio_email) { <a [href]="'mailto:' + m.refugio_email"><mat-icon>mail</mat-icon> {{ m.refugio_email }}</a> }
+          @if (m.refugio_direccion) { <span><mat-icon>home_work</mat-icon> {{ m.refugio_direccion }}</span> }
+          @if (m.refugio_sitio_web) { <a [href]="m.refugio_sitio_web" target="_blank" rel="noopener"><mat-icon>language</mat-icon> Sitio web</a> }
+        </div>
+      </div>
+      <button mat-stroked-button color="primary" (click)="verRefugio()">Ver refugio</button>
+    </div>
+  </ui-card>
+
+  <!-- ===== Testimonios ===== -->
+  <section class="testimonios">
+    <h2 class="hc-h2 seccion-titulo">Historias de adopción</h2>
+    <div class="testimonios__grid">
+      @for (t of testimonios; track t.mascota) {
+        <ui-card>
+          <p class="testimonio__texto">“{{ t.texto }}”</p>
+          <p class="testimonio__autor">{{ t.emoji }} {{ t.adoptante }} · {{ t.ciudad }}</p>
+        </ui-card>
+      }
+    </div>
+  </section>
+}

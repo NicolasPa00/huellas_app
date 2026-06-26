@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+mat-progress-bar {
+  margin-bottom: var(--hc-space-sm);
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+  padding-top: var(--hc-space-xs);
+}
+
+.grupo {
+  font: var(--hc-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  color: var(--hc-color-primary-strong);
+  margin: var(--hc-space-xs) 0 calc(-1 * var(--hc-space-xs));
+}
+
+.full {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hc-space-md);
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

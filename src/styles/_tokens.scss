@@ -1,0 +1,79 @@
+/* ============================================================
+   HUELLAS CONECTADAS · Design tokens
+   Variables globales. NO usar colores hardcodeados en componentes.
+   ============================================================ */
+:root {
+  /* ===== Color · marca ===== */
+  --hc-color-primary: #1f9d6b;
+  --hc-color-primary-strong: #13714c;
+  --hc-color-primary-soft: #e7f5ef;
+  --hc-color-on-primary: #ffffff;
+
+  --hc-color-secondary: #f97362;
+  --hc-color-secondary-strong: #e4533f;
+  --hc-color-secondary-soft: #fdece9;
+  --hc-color-on-secondary: #ffffff;
+
+  /* ===== Color · estado ===== */
+  --hc-color-success: #16a34a;
+  --hc-color-success-soft: #e7f6ed;
+  --hc-color-warning: #f59e0b;
+  --hc-color-warning-soft: #fef3e2;
+  --hc-color-error: #dc2626;
+  --hc-color-error-soft: #fdecec;
+  --hc-color-info: #2563eb;
+  --hc-color-info-soft: #e8eefd;
+
+  /* ===== Neutros / superficie ===== */
+  --hc-color-bg: #f6f8f7;
+  --hc-color-surface: #ffffff;
+  --hc-color-surface-2: #f1f4f3;
+  --hc-color-border: #e6eae8;
+  --hc-color-text: #0f172a;
+  --hc-color-text-muted: #64748b;
+  --hc-color-text-subtle: #94a3b8;
+
+  /* ===== Tipografía ===== */
+  --hc-font: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Display redondeada y cálida para titulares de marca (logo, tagline). */
+  --hc-font-display: 'Baloo 2', 'Nunito', system-ui, sans-serif;
+  --hc-text-display: 700 1.875rem/1.2 var(--hc-font);
+  --hc-text-h1: 700 1.5rem/1.25 var(--hc-font);
+  --hc-text-h2: 600 1.25rem/1.3 var(--hc-font);
+  --hc-text-h3: 600 1rem/1.4 var(--hc-font);
+  --hc-text-body: 400 0.875rem/1.5 var(--hc-font);
+  --hc-text-label: 600 0.8125rem/1.4 var(--hc-font);
+  --hc-text-caption: 400 0.75rem/1.4 var(--hc-font);
+
+  /* ===== Espaciado ===== */
+  --hc-space-xs: 4px;
+  --hc-space-sm: 8px;
+  --hc-space-md: 16px;
+  --hc-space-lg: 24px;
+  --hc-space-xl: 32px;
+  --hc-space-2xl: 48px;
+
+  /* ===== Radios ===== */
+  --hc-radius-sm: 8px;
+  --hc-radius-md: 12px;
+  --hc-radius-lg: 16px;
+  --hc-radius-pill: 999px;
+
+  /* ===== Sombras ===== */
+  --hc-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --hc-shadow-md: 0 2px 6px rgba(15, 23, 42, 0.06), 0 8px 20px rgba(15, 23, 42, 0.06);
+  --hc-shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.14);
+
+  /* ===== Layout ===== */
+  --hc-sidebar-width: 264px;
+  --hc-header-height: 64px;
+  /* Altura compartida por el footer de la app y la sección de usuario del sidebar
+     (para que queden alineados simétricamente al pie de la vista). */
+  --hc-footer-height: 64px;
+
+  /* ===== Material 3 · alinear sistema a la marca ===== */
+  --mat-sys-primary: var(--hc-color-primary);
+  --mat-sys-on-primary: var(--hc-color-on-primary);
+  --mat-sys-primary-container: var(--hc-color-primary-soft);
+  --mat-sys-on-primary-container: var(--hc-color-primary-strong);
+}

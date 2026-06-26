@@ -1,0 +1,44 @@
+<section class="head">
+  <span class="head__eyebrow">🐾 Adopción responsable</span>
+  <h1 class="hc-h1">¿Cómo funciona la adopción?</h1>
+  <p class="hc-body">
+    Adoptar es un acto de amor y compromiso. Estos son los pasos para darle un hogar a tu nuevo compañero.
+  </p>
+</section>
+
+<!-- ===== Pasos ===== -->
+<section class="pasos">
+  @for (p of pasos; track p.numero) {
+    <ui-card [hover]="true">
+      <div class="paso">
+        <div class="paso__badge">{{ p.numero }}</div>
+        <div class="paso__icono"><mat-icon>{{ p.icono }}</mat-icon></div>
+        <div class="paso__texto">
+          <h3 class="hc-h3">{{ p.titulo }}</h3>
+          <p class="hc-caption">{{ p.descripcion }}</p>
+        </div>
+      </div>
+    </ui-card>
+  }
+</section>
+
+<section class="cta">
+  <a mat-flat-button color="primary" routerLink="/mascotas">
+    <mat-icon>pets</mat-icon> Empezar a explorar mascotas
+  </a>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq" id="faq">
+  <h2 class="hc-h2">Preguntas frecuentes</h2>
+  <mat-accordion class="faq__acordeon">
+    @for (q of faq; track q.pregunta) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ q.pregunta }}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <p class="hc-body">{{ q.respuesta }}</p>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</section>

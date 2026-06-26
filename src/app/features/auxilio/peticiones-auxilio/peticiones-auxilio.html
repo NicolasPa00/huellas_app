@@ -1,0 +1,66 @@
+<ui-page-header
+  titulo="Peticiones de auxilio"
+  descripcion="Personas que piden ayuda para evitar el abandono de su mascota. Contáctalas para orientarlas."
+/>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && peticiones().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="sos"
+      titulo="Sin peticiones por ahora"
+      mensaje="Cuando alguien pida ayuda con su mascota, su solicitud aparecerá aquí."
+    />
+  </ui-card>
+}
+
+<div class="lista">
+  @for (p of peticiones(); track p.id) {
+    <ui-card [class.atendida]="p.estado === 'ATENDIDA'">
+      <div class="cab">
+        <div>
+          <h3 class="hc-h3">{{ p.contacto_nombre }}</h3>
+          <p class="hc-caption meta">
+            <mat-icon class="ic">call</mat-icon> {{ p.contacto_telefono }}
+            @if (p.contacto_email) { · <mat-icon class="ic">mail</mat-icon> {{ p.contacto_email }} }
+            @if (p.ciudad) { · <mat-icon class="ic">place</mat-icon> {{ p.ciudad }} }
+          </p>
+        </div>
+        <div class="badges">
+          <span class="nivel" [class]="nivelClase(p)">{{ nivel(p) }}</span>
+          @if (p.estado === 'ATENDIDA') {
+            <span class="estado-ok"><mat-icon>check_circle</mat-icon> Atendida</span>
+          }
+        </div>
+      </div>
+
+      <div class="datos">
+        <span><strong>Motivo:</strong> {{ motivo(p) }}</span>
+        <span><strong>Recibida:</strong> {{ p.fecha_creacion | date: 'd MMM y, HH:mm' }}</span>
+      </div>
+
+      @if (p.descripcion) {
+        <p class="desc hc-body">{{ p.descripcion }}</p>
+      }
+
+      <div class="acciones">
+        <a mat-stroked-button color="primary" [href]="'tel:' + p.contacto_telefono">
+          <mat-icon>call</mat-icon> Llamar
+        </a>
+        @if (p.estado === 'PENDIENTE') {
+          <button mat-flat-button color="primary" [disabled]="procesando() === p.id"
+                  (click)="cambiar(p, 'ATENDIDA')">
+            <mat-icon>check</mat-icon> Marcar atendida
+          </button>
+        } @else {
+          <button mat-button [disabled]="procesando() === p.id" (click)="cambiar(p, 'PENDIENTE')">
+            <mat-icon>undo</mat-icon> Reabrir
+          </button>
+        }
+      </div>
+    </ui-card>
+  }
+</div>

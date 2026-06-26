@@ -1,0 +1,64 @@
+<ui-page-header titulo="Mis mascotas" descripcion="Registra y administra las mascotas de tus refugios.">
+  <button actions mat-flat-button color="primary" (click)="abrir()">
+    <mat-icon>add</mat-icon>
+    Registrar mascota
+  </button>
+</ui-page-header>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && mascotas().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="pets"
+      titulo="Aún no hay mascotas"
+      mensaje="Registra una mascota. Necesitas tener al menos un refugio."
+    >
+      <button mat-flat-button color="primary" (click)="abrir()">
+        Registrar mascota
+      </button>
+    </ui-empty-state>
+  </ui-card>
+}
+
+<div class="grid">
+  @for (m of mascotas(); track m.id) {
+    <ui-card [hover]="true" [flush]="true">
+      <div class="foto">
+        @if (m.foto_principal) {
+          <img [src]="m.foto_principal" [alt]="m.nombre" />
+        } @else {
+          <mat-icon class="sin-foto">pets</mat-icon>
+        }
+        <span class="estado-badge">{{ m.estado }}</span>
+      </div>
+
+      <div class="cuerpo">
+        <h3 class="hc-h3">{{ m.nombre }}</h3>
+        <p class="hc-caption">{{ m.especie }}@if (m.raza) { · {{ m.raza }}}</p>
+
+        <div class="datos">
+          <span>{{ edad(m.edad_aprox_meses) }}</span>
+          @if (m.tamano) { <span>· {{ m.tamano }}</span> }
+          @if (m.nivel_energia) { <span>· Energía {{ m.nivel_energia }}</span> }
+        </div>
+
+        <p class="refugio hc-caption"><mat-icon>home_work</mat-icon> {{ m.refugio_nombre }}</p>
+
+        <div class="acciones">
+          <button mat-icon-button (click)="verDatos(m.id)" matTooltip="Ver datos" aria-label="Ver datos">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button (click)="abrir(m.id)" matTooltip="Editar" aria-label="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminar(m)" matTooltip="Eliminar" aria-label="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </ui-card>
+  }
+</div>

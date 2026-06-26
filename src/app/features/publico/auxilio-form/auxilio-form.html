@@ -1,0 +1,95 @@
+@if (enviado()) {
+  <div class="exito">
+    <div class="exito__icon"><mat-icon>volunteer_activism</mat-icon></div>
+    <h2 class="exito__title">Tu petición fue registrada 🐾</h2>
+    <p class="exito__msg">
+      Un refugio de la red podrá comunicarse contigo para orientarte y, según su disponibilidad,
+      ayudarte con tu mascota. Gracias por elegir la entrega responsable.
+    </p>
+    <button mat-flat-button color="primary" (click)="cerrar()">Entendido</button>
+  </div>
+} @else {
+  <h2 mat-dialog-title>
+    <mat-icon class="title-ic">sos</mat-icon> Pedir ayuda con mi mascota
+  </h2>
+
+  @if (enviando()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <mat-dialog-content>
+    <p class="hc-caption intro">
+      Antes del abandono, hay opciones. Cuéntanos tu situación y conectaremos tu caso con refugios
+      que puedan orientarte. Esto registra una <strong>petición de ayuda</strong>, no una adopción.
+    </p>
+
+    <form [formGroup]="form" class="form">
+      <h3 class="grupo">Datos de contacto</h3>
+      <mat-form-field class="full">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="contacto_nombre" />
+        @if (form.controls.contacto_nombre.hasError('required')) {
+          <mat-error>Tu nombre es obligatorio</mat-error>
+        }
+      </mat-form-field>
+      <div class="grid">
+        <mat-form-field>
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="contacto_telefono" />
+          @if (form.controls.contacto_telefono.hasError('required')) {
+            <mat-error>El teléfono es obligatorio</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Correo (opcional)</mat-label>
+          <input matInput type="email" formControlName="contacto_email" />
+          @if (form.controls.contacto_email.hasError('email')) {
+            <mat-error>Correo no válido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <mat-form-field class="full">
+        <mat-label>Ciudad (opcional)</mat-label>
+        <input matInput formControlName="ciudad" placeholder="Ayuda a ubicar un refugio cercano" />
+      </mat-form-field>
+
+      <h3 class="grupo">Tu situación</h3>
+      <mat-form-field class="full">
+        <mat-label>Nivel de emergencia</mat-label>
+        <mat-select formControlName="nivel_emergencia">
+          @for (n of niveles; track n.valor) {
+            <mat-option [value]="n.valor">{{ n.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.nivel_emergencia.hasError('required')) {
+          <mat-error>Indícanos qué tan urgente es</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="full">
+        <mat-label>Motivo (opcional)</mat-label>
+        <mat-select formControlName="motivo">
+          <mat-option value="">Prefiero no decir</mat-option>
+          @for (m of motivos; track m.valor) {
+            <mat-option [value]="m.valor">{{ m.etiqueta }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full">
+        <mat-label>Cuéntanos más (opcional)</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="descripcion"
+          placeholder="Describe tu situación y datos de la mascota (especie, edad, temperamento...)"
+        ></textarea>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" (click)="cerrar()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="enviar()" [disabled]="enviando()">
+      <mat-icon>send</mat-icon> Enviar petición
+    </button>
+  </mat-dialog-actions>
+}

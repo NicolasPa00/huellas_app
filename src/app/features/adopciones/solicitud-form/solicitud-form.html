@@ -1,0 +1,156 @@
+<h2 mat-dialog-title>Solicitud de adopción · {{ data.mascotaNombre }}</h2>
+
+@if (enviando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-dialog-content>
+  <p class="hc-caption refugio">
+    <mat-icon>home_work</mat-icon> Se enviará a {{ data.refugioNombre }}
+  </p>
+
+  <form [formGroup]="form" class="dialog-form">
+    <h3 class="grupo">Tus datos de contacto</h3>
+    <mat-form-field class="full">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput formControlName="contacto_nombre" />
+      @if (form.controls.contacto_nombre.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" formControlName="contacto_email" />
+        @if (form.controls.contacto_email.hasError('required')) {
+          <mat-error>El correo es obligatorio</mat-error>
+        }
+        @if (form.controls.contacto_email.hasError('email')) {
+          <mat-error>Correo no válido</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="contacto_telefono" />
+        @if (form.controls.contacto_telefono.hasError('required')) {
+          <mat-error>El teléfono es obligatorio</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <h3 class="grupo">Datos del solicitante</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Tipo de dueño / vivienda</mat-label>
+        <mat-select formControlName="tipo_duenio">
+          @for (o of tipoDuenioOpts; track o.valor) {
+            <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.tipo_duenio.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Tipo de vivienda</mat-label>
+        <mat-select formControlName="tipo_vivienda">
+          @for (o of tipoViviendaOpts; track o.valor) {
+            <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.tipo_vivienda.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="full">
+      <mat-label>Dirección de residencia (ciudad / barrio)</mat-label>
+      <input matInput formControlName="direccion_residencia" />
+      @if (form.controls.direccion_residencia.hasError('required')) {
+        <mat-error>La dirección es obligatoria</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="espacios_aire_libre">
+      ¿La vivienda tiene espacios al aire libre?
+    </mat-slide-toggle>
+
+    <h3 class="grupo">Estilo de vida</h3>
+    <mat-form-field class="full">
+      <mat-label>¿Cuántas horas al día estás fuera de casa?</mat-label>
+      <mat-select formControlName="horas_fuera">
+        @for (o of horasFueraOpts; track o.valor) {
+          <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.horas_fuera.hasError('required')) {
+        <mat-error>Selecciona una opción</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="otros_animales">
+      ¿Tienes otros animales en casa?
+    </mat-slide-toggle>
+    @if (form.controls.otros_animales.value) {
+      <mat-form-field class="full">
+        <mat-label>¿Cuáles y cuántos?</mat-label>
+        <input matInput formControlName="otros_animales_detalle" placeholder="Ej: 1 gato, 2 perros" />
+      </mat-form-field>
+    }
+
+    <mat-slide-toggle formControlName="hay_ninos">¿Hay niños en el hogar?</mat-slide-toggle>
+    @if (form.controls.hay_ninos.value) {
+      <mat-form-field class="full">
+        <mat-label>Edades de los niños</mat-label>
+        <input matInput formControlName="ninos_edades" placeholder="Ej: 5 y 8 años" />
+      </mat-form-field>
+    }
+
+    <h3 class="grupo">Preferencias y capacidad de cuidado</h3>
+    <mat-form-field class="full">
+      <mat-label>Experiencia previa con mascotas</mat-label>
+      <mat-select formControlName="experiencia">
+        @for (o of experienciaOpts; track o.valor) {
+          <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.experiencia.hasError('required')) {
+        <mat-error>Selecciona una opción</mat-error>
+      }
+    </mat-form-field>
+    <mat-slide-toggle formControlName="cubre_gastos">
+      ¿Puedes cubrir gastos veterinarios y de alimentación?
+    </mat-slide-toggle>
+    <mat-slide-toggle formControlName="tiempo_paseos">
+      ¿Cuentas con tiempo para paseos y ejercicio diario?
+    </mat-slide-toggle>
+
+    <h3 class="grupo">Compromisos</h3>
+    <div class="compromisos">
+      <mat-checkbox formControlName="acepta_terminos">
+        Acepto los términos de adopción responsable
+      </mat-checkbox>
+      <mat-checkbox formControlName="compromiso_esterilizacion">
+        Me comprometo a esterilizar a la mascota
+      </mat-checkbox>
+      <mat-checkbox formControlName="autoriza_seguimiento">
+        Autorizo el seguimiento post-adopción
+      </mat-checkbox>
+    </div>
+
+    <mat-form-field class="full">
+      <mat-label>Mensaje para el refugio (opcional)</mat-label>
+      <textarea matInput rows="2" formControlName="mensaje"></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" (click)="cerrar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="enviar()" [disabled]="enviando()">
+    <mat-icon>favorite</mat-icon>
+    Enviar solicitud
+  </button>
+</mat-dialog-actions>

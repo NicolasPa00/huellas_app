@@ -1,0 +1,125 @@
+.refugio {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--hc-color-text-subtle);
+  margin-bottom: var(--hc-space-md);
+}
+.refugio mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.compat {
+  border: 1px solid var(--hc-color-border);
+  border-radius: var(--hc-radius-md);
+  padding: var(--hc-space-md);
+  margin-bottom: var(--hc-space-lg);
+  --compat-color: var(--hc-color-primary);
+}
+.compat--alta { --compat-color: var(--hc-color-primary); }
+.compat--media { --compat-color: #d9930a; }
+.compat--baja { --compat-color: var(--hc-color-secondary); }
+
+.compat__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.compat__score {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--compat-color);
+}
+.compat__bar {
+  height: 8px;
+  border-radius: var(--hc-radius-pill);
+  background: var(--hc-color-surface-2);
+  overflow: hidden;
+  margin: var(--hc-space-xs) 0 var(--hc-space-sm);
+}
+.compat__bar span {
+  display: block;
+  height: 100%;
+  background: var(--compat-color);
+  transition: width 0.3s ease;
+}
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: var(--hc-color-text-muted);
+  margin-bottom: var(--hc-space-sm);
+}
+.aviso mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+.criterios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-sm);
+}
+.criterios__row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+.criterios__pct {
+  color: var(--compat-color);
+}
+.criterios li p {
+  margin-top: 2px;
+}
+
+.full {
+  width: 100%;
+}
+
+/* Cuestionario */
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+
+.grupo {
+  font: var(--hc-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  color: var(--hc-color-primary-strong);
+  margin: var(--hc-space-sm) 0 calc(-1 * var(--hc-space-xs));
+}
+.grupo:first-of-type {
+  margin-top: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hc-space-md);
+}
+
+.compromisos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-sm);
+  padding: var(--hc-space-md);
+  background: var(--hc-color-primary-soft);
+  border-radius: var(--hc-radius-md);
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

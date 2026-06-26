@@ -1,0 +1,120 @@
+<h2 mat-dialog-title>
+  <mat-icon class="ia-icon">auto_awesome</mat-icon> Recomendación IA
+</h2>
+
+@if (analizando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-dialog-content>
+  @if (!resultado()) {
+    <p class="hc-caption intro">
+      Cuéntanos sobre tu hogar y estilo de vida. Analizaremos las mascotas disponibles y te
+      recomendaremos las que mejor se ajusten a tu perfil.
+    </p>
+
+    <form [formGroup]="form" class="ia-form">
+      <mat-form-field class="full">
+        <mat-label>Tipo de vivienda</mat-label>
+        <mat-select formControlName="tipo_vivienda">
+          @for (o of tipoViviendaOpts; track o.valor) {
+            <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.tipo_vivienda.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName="espacios_aire_libre">
+        ¿Tienes espacios al aire libre?
+      </mat-slide-toggle>
+
+      <mat-form-field class="full">
+        <mat-label>¿Cuántas horas al día estás fuera de casa?</mat-label>
+        <mat-select formControlName="horas_fuera">
+          @for (o of horasFueraOpts; track o.valor) {
+            <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.horas_fuera.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full">
+        <mat-label>Experiencia previa con mascotas</mat-label>
+        <mat-select formControlName="experiencia">
+          @for (o of experienciaOpts; track o.valor) {
+            <mat-option [value]="o.valor">{{ o.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.experiencia.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName="hay_ninos">¿Hay niños en el hogar?</mat-slide-toggle>
+      <mat-slide-toggle formControlName="otros_animales">¿Tienes otras mascotas?</mat-slide-toggle>
+    </form>
+  } @else {
+    <div class="perfil">
+      <h3 class="hc-h3"><mat-icon>person_search</mat-icon> Tu perfil</h3>
+      <p class="hc-body">{{ resultado()!.perfil_resumen }}</p>
+    </div>
+
+    <h3 class="grupo">Mascotas recomendadas para ti</h3>
+
+    @if (resultado()!.recomendaciones.length === 0) {
+      <p class="hc-caption">
+        No hay mascotas disponibles por ahora. Vuelve más tarde para nuevas recomendaciones.
+      </p>
+    }
+
+    <div class="recs">
+      @for (rec of resultado()!.recomendaciones; track rec.id) {
+        <div class="rec">
+          <div class="rec__foto">
+            @if (rec.foto_principal) {
+              <img [src]="rec.foto_principal" [alt]="rec.nombre" />
+            } @else {
+              <mat-icon class="sin-foto">pets</mat-icon>
+            }
+          </div>
+          <div class="rec__body">
+            <div class="rec__head">
+              <h4 class="hc-h3">{{ rec.nombre }}</h4>
+              <span class="rec__match">{{ rec.puntaje }}%</span>
+            </div>
+            <p class="hc-caption">
+              {{ rec.especie }}@if (rec.raza) { · {{ rec.raza }}} · {{ edad(rec.edad_aprox_meses) }}
+            </p>
+            <p class="rec__just hc-body">{{ rec.justificacion }}</p>
+            <div class="rec__actions">
+              <button mat-button (click)="verDatos(rec)">
+                <mat-icon>visibility</mat-icon> Ver datos
+              </button>
+              <button mat-flat-button color="primary" (click)="adoptar(rec)">
+                <mat-icon>favorite</mat-icon> Solicitar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  @if (!resultado()) {
+    <button mat-stroked-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="analizar()" [disabled]="analizando()">
+      <mat-icon>auto_awesome</mat-icon> Analizar
+    </button>
+  } @else {
+    <button mat-stroked-button type="button" (click)="volver()">
+      <mat-icon>arrow_back</mat-icon> Ajustar respuestas
+    </button>
+    <button mat-flat-button color="primary" mat-dialog-close>Cerrar</button>
+  }
+</mat-dialog-actions>

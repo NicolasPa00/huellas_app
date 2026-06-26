@@ -1,0 +1,52 @@
+<section class="head">
+  <h1 class="hc-h1">Refugios participantes</h1>
+  <p class="hc-body">Organizaciones aliadas que dan una segunda oportunidad a cada mascota.</p>
+</section>
+
+<div class="barra">
+  <mat-form-field appearance="outline">
+    <mat-label>Filtrar por ubicación</mat-label>
+    <mat-select [value]="filtroUbicacion()" (valueChange)="filtroUbicacion.set($event)">
+      <mat-option [value]="null">Todas las ubicaciones</mat-option>
+      @for (u of ubicaciones(); track u) {
+        <mat-option [value]="u">{{ u }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && refugios().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="home_work"
+      titulo="No hay refugios para mostrar"
+      mensaje="Vuelve pronto: cada vez se suman más refugios a la red."
+    />
+  </ui-card>
+}
+
+<div class="grid">
+  @for (r of refugios(); track r.id) {
+    <ui-card [hover]="true">
+      <a class="refugio" [routerLink]="['/refugios', r.id]">
+        <div class="refugio__logo">{{ r.nombre.charAt(0) }}</div>
+        <div class="refugio__body">
+          <div class="refugio__nombre">
+            <h3 class="hc-h3">{{ r.nombre }}</h3>
+            @if (r.verificado) { <mat-icon class="verificado" title="Verificado">verified</mat-icon> }
+          </div>
+          <p class="hc-caption ubicacion"><mat-icon>place</mat-icon> {{ ubicacion(r) }}</p>
+          <div class="metricas">
+            <span><mat-icon>pets</mat-icon> {{ r.mascotas_disponibles }} en adopción</span>
+            <span><mat-icon>calendar_month</mat-icon> {{ anios(r) }} año(s)</span>
+            <span><mat-icon>favorite</mat-icon> {{ r.adopciones_realizadas }} adopciones</span>
+          </div>
+        </div>
+      </a>
+    </ui-card>
+  }
+</div>

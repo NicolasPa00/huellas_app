@@ -1,0 +1,71 @@
+<div class="login-page">
+  <!-- Izquierda: logo / branding -->
+  <section class="login-visual">
+    <div class="login-visual__inner">
+      <img class="login-visual__img" src="/logo_hurllas.jpeg" alt="Huellas Conectadas" />
+      <p class="login-visual__tagline">Conectando mascotas con hogares llenos de amor</p>
+    </div>
+  </section>
+
+  <!-- Derecha: card de credenciales -->
+  <section class="login-form-side">
+    <mat-card class="login-card" appearance="outlined">
+      @if (cargando()) {
+        <mat-progress-bar mode="indeterminate" />
+      }
+
+      <div class="login-card__head">
+        <h2 class="login-card__title">Iniciar sesión</h2>
+        <p class="login-card__subtitle hc-muted">Ingresa tus credenciales para continuar</p>
+      </div>
+
+      <form class="login-form" [formGroup]="form" (ngSubmit)="enviar()">
+        <mat-form-field class="full-width">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput type="email" formControlName="email" autocomplete="email" />
+          <mat-icon matSuffix>mail</mat-icon>
+          @if (form.controls.email.hasError('required')) {
+            <mat-error>El correo es obligatorio</mat-error>
+          } @else if (form.controls.email.hasError('email')) {
+            <mat-error>Correo no válido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            [type]="ocultarPassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="ocultarPassword.set(!ocultarPassword())"
+            [attr.aria-label]="'Mostrar contraseña'"
+          >
+            <mat-icon>{{ ocultarPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>La contraseña es obligatoria</mat-error>
+          } @else if (form.controls.password.hasError('minlength')) {
+            <mat-error>Mínimo 8 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="login-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="cargando()">
+            Ingresar
+          </button>
+        </div>
+      </form>
+
+      <div class="login-links">
+        <a routerLink="/forgot-password">¿Olvidaste tu contraseña?</a>
+        <a routerLink="/register">Crear cuenta</a>
+      </div>
+    </mat-card>
+  </section>
+</div>

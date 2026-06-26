@@ -1,0 +1,403 @@
+:host {
+  display: block;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--hc-space-xl) var(--hc-space-lg) var(--hc-space-2xl);
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: var(--hc-space-xl);
+}
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--hc-text-label);
+  color: var(--hc-color-primary-strong);
+  background: var(--hc-color-primary-soft);
+  padding: 4px 12px;
+  border-radius: var(--hc-radius-pill);
+}
+.hero__eyebrow mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.hero__title {
+  font: var(--hc-text-display);
+  margin: var(--hc-space-md) 0 var(--hc-space-sm);
+  color: var(--hc-color-text);
+}
+.hero__sub {
+  font: var(--hc-text-body);
+  color: var(--hc-color-text-muted);
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+/* Segmentos de navegación */
+.segmentos {
+  display: flex;
+  gap: var(--hc-space-xs);
+  background: var(--hc-color-surface-2);
+  border-radius: var(--hc-radius-pill);
+  padding: 4px;
+  margin-bottom: var(--hc-space-xl);
+}
+.segmento {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px var(--hc-space-md);
+  border: none;
+  background: transparent;
+  border-radius: var(--hc-radius-pill);
+  cursor: pointer;
+  font: var(--hc-text-label);
+  color: var(--hc-color-text-muted);
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+.segmento mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.segmento--activo {
+  background: var(--hc-color-surface);
+  color: var(--hc-color-primary-strong);
+  box-shadow: var(--hc-shadow-sm);
+}
+@media (max-width: 560px) {
+  .segmento span {
+    display: none;
+  }
+}
+
+.intro {
+  color: var(--hc-color-text-muted);
+  margin-bottom: var(--hc-space-md);
+}
+
+.seccion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: var(--hc-text-h2);
+  margin: var(--hc-space-lg) 0 var(--hc-space-md);
+}
+.seccion--card {
+  margin-top: 0;
+}
+.seccion mat-icon {
+  color: var(--hc-color-primary);
+}
+
+/* Selector de problemas */
+.problemas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--hc-space-md);
+  margin-bottom: var(--hc-space-xl);
+}
+.problema {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--hc-space-sm);
+  padding: var(--hc-space-lg) var(--hc-space-md);
+  background: var(--hc-color-surface);
+  border: 1px solid var(--hc-color-border);
+  border-radius: var(--hc-radius-lg);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  font: var(--hc-text-label);
+  color: var(--hc-color-text);
+}
+.problema:hover {
+  box-shadow: var(--hc-shadow-md);
+  transform: translateY(-2px);
+}
+.problema--activo {
+  border-color: var(--hc-color-primary);
+  box-shadow: 0 0 0 2px var(--hc-color-primary-soft);
+}
+.problema__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--hc-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--hc-color-primary-soft);
+  color: var(--hc-color-primary);
+}
+.problema--activo .problema__icon {
+  background: var(--hc-color-primary);
+  color: #fff;
+}
+.problema__nombre {
+  text-align: center;
+}
+
+/* Formulario de contexto */
+.descripcion {
+  margin-bottom: var(--hc-space-md);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+.full {
+  width: 100%;
+}
+.form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--hc-space-sm);
+}
+
+/* Recomendaciones */
+.resultado {
+  margin-top: var(--hc-space-xl);
+}
+.recos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+.reco {
+  display: flex;
+  gap: var(--hc-space-md);
+  align-items: flex-start;
+}
+.reco__num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--hc-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--hc-color-primary);
+  color: #fff;
+  font-weight: 800;
+}
+.reco__texto p {
+  margin-top: 2px;
+  color: var(--hc-color-text-muted);
+}
+.nota {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: var(--hc-space-lg);
+  color: var(--hc-color-text-muted);
+}
+.nota mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+/* Tarjetas de escalada responsable */
+.escalada {
+  margin-top: var(--hc-space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hc-space-md);
+  flex-wrap: wrap;
+  border-left: 4px solid var(--hc-color-primary);
+}
+.escalada__txt {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--hc-space-sm);
+  flex: 1;
+  min-width: 240px;
+}
+.escalada__txt mat-icon {
+  color: var(--hc-color-primary);
+  flex-shrink: 0;
+}
+.escalada__txt p {
+  margin: 0;
+  color: var(--hc-color-text-muted);
+}
+.escalada__acc {
+  display: flex;
+  gap: var(--hc-space-sm);
+  flex-wrap: wrap;
+}
+
+/* Aviso de entrega responsable con botón de auxilio */
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: var(--hc-space-lg);
+}
+.aviso p {
+  margin: 0;
+  color: var(--hc-color-text);
+}
+.aviso__sos {
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .aviso {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .aviso__sos {
+    width: 100%;
+  }
+}
+
+/* ===== Veterinarias ===== */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hc-space-sm);
+  margin-bottom: var(--hc-space-lg);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--hc-radius-pill);
+  border: 1px solid var(--hc-color-border);
+  background: var(--hc-color-surface);
+  color: var(--hc-color-text-muted);
+  cursor: pointer;
+  font: var(--hc-text-label);
+  transition: all 0.15s ease;
+}
+.chip mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+.chip--activo {
+  background: var(--hc-color-primary);
+  border-color: var(--hc-color-primary);
+  color: #fff;
+}
+
+.vets,
+.refugios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--hc-space-md);
+}
+
+.vet__head,
+.refugio__head {
+  display: flex;
+  gap: var(--hc-space-md);
+  align-items: center;
+}
+.vet__logo,
+.refugio__logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: var(--hc-radius-md);
+  display: grid;
+  place-items: center;
+}
+.vet__logo {
+  background: var(--hc-color-primary-soft);
+  color: var(--hc-color-primary);
+}
+.refugio__logo {
+  background: var(--hc-color-secondary);
+  color: var(--hc-color-on-secondary);
+  font: var(--hc-text-h1);
+}
+.ic {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  vertical-align: text-bottom;
+}
+.vet__desc,
+.refugio__desc {
+  margin: var(--hc-space-sm) 0;
+  color: var(--hc-color-text-muted);
+}
+.vet__areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--hc-space-sm);
+}
+.area-tag {
+  font: var(--hc-text-caption);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--hc-radius-pill);
+  background: var(--hc-color-primary-soft);
+  color: var(--hc-color-primary-strong);
+}
+.vet__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--hc-color-primary-strong);
+  text-decoration: none;
+  font: var(--hc-text-label);
+}
+.vet__tel mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+/* ===== Refugios (entrega responsable) ===== */
+.aviso-card {
+  margin-bottom: var(--hc-space-lg);
+  border-left: 4px solid var(--hc-color-secondary);
+}
+.aviso-card p {
+  margin: 0;
+  color: var(--hc-color-text);
+}
+.verif {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--hc-color-success);
+  vertical-align: text-bottom;
+}
+.refugio__contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: var(--hc-space-md);
+}
+.refugio__contacto a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--hc-color-text-muted);
+  text-decoration: none;
+  font: var(--hc-text-body);
+}
+.refugio__contacto mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 560px) {
+  .form__actions {
+    flex-direction: column-reverse;
+  }
+  .form__actions button {
+    width: 100%;
+  }
+}

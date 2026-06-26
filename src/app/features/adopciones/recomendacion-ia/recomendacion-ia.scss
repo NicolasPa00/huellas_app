@@ -1,0 +1,113 @@
+.ia-icon {
+  color: var(--hc-color-secondary);
+  vertical-align: middle;
+}
+
+.intro {
+  margin-bottom: var(--hc-space-md);
+}
+
+.ia-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+
+.full {
+  width: 100%;
+}
+
+/* Resultado */
+.perfil {
+  background: var(--hc-color-primary-soft);
+  border-radius: var(--hc-radius-md);
+  padding: var(--hc-space-md);
+  margin-bottom: var(--hc-space-md);
+}
+.perfil h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--hc-color-primary-strong);
+  margin-bottom: var(--hc-space-xs);
+}
+.perfil h3 mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.grupo {
+  font: var(--hc-text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+  color: var(--hc-color-primary-strong);
+  margin: 0 0 var(--hc-space-sm);
+}
+
+.recs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+
+.rec {
+  display: flex;
+  gap: var(--hc-space-md);
+  border: 1px solid var(--hc-color-border);
+  border-radius: var(--hc-radius-md);
+  padding: var(--hc-space-sm);
+}
+.rec__foto {
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border-radius: var(--hc-radius-sm);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--hc-color-surface-2);
+}
+.rec__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sin-foto {
+  color: var(--hc-color-text-subtle);
+}
+.rec__body {
+  flex: 1;
+  min-width: 0;
+}
+.rec__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--hc-space-sm);
+}
+.rec__match {
+  font-weight: 800;
+  color: var(--hc-color-primary);
+}
+.rec__just {
+  margin-top: var(--hc-space-xs);
+  color: var(--hc-color-text-muted);
+}
+.rec__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--hc-space-xs);
+  margin-top: var(--hc-space-xs);
+}
+
+@media (max-width: 560px) {
+  .rec {
+    flex-direction: column;
+  }
+  .rec__foto {
+    width: 100%;
+    height: 150px;
+  }
+}

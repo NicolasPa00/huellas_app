@@ -1,0 +1,91 @@
+<h2 mat-dialog-title>
+  <mat-icon class="title-ic">fact_check</mat-icon> Seguimiento de {{ adoptante.mascota_nombre }}
+</h2>
+
+@if (generando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-dialog-content>
+  <p class="hc-caption intro">
+    Adoptante: <strong>{{ adoptante.adoptante_nombre }} {{ adoptante.adoptante_apellido }}</strong>
+    @if (adoptante.fecha_adopcion) { · adoptada el {{ adoptante.fecha_adopcion | date: 'd MMM y' }} }
+  </p>
+
+  <!-- ====== Sin enlace todavía ====== -->
+  @if (!token()) {
+    <div class="bloque">
+      <p class="hc-body">
+        Genera un enlace y compártelo con el adoptante. Al abrirlo podrá registrar el estado actual
+        de {{ adoptante.mascota_nombre }}: peso, alimentación, vacunas y fotografías recientes.
+        Así verificamos que la mascota está en buenas condiciones tras la adopción.
+      </p>
+      <button mat-flat-button color="primary" (click)="generar()" [disabled]="generando()">
+        <mat-icon>link</mat-icon> Generar enlace de seguimiento
+      </button>
+    </div>
+  }
+
+  <!-- ====== Enlace pendiente de respuesta ====== -->
+  @if (token() && estado() !== 'COMPLETADO') {
+    <div class="bloque">
+      <span class="estado estado--pend"><mat-icon>hourglass_top</mat-icon> Esperando respuesta del adoptante</span>
+      <label class="enlace-label">Enlace para compartir</label>
+      <div class="enlace">
+        <input class="enlace__input" [value]="enlace()" readonly />
+        <button mat-icon-button (click)="copiar()" matTooltip="Copiar enlace">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </div>
+      <div class="compartir">
+        <button mat-stroked-button (click)="compartirWhatsApp()">
+          <mat-icon>chat</mat-icon> WhatsApp
+        </button>
+        @if (adoptante.adoptante_email) {
+          <button mat-stroked-button (click)="compartirEmail()">
+            <mat-icon>mail</mat-icon> Correo
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ====== Respuesta recibida ====== -->
+  @if (estado() === 'COMPLETADO') {
+    <div class="bloque">
+      <span class="estado estado--ok"><mat-icon>task_alt</mat-icon>
+        Seguimiento recibido
+        @if (adoptante.fecha_respuesta) { · {{ adoptante.fecha_respuesta | date: 'd MMM y' }} }
+      </span>
+
+      <dl class="datos">
+        <div><dt>Peso actual</dt><dd>{{ adoptante.peso_kg }} kg</dd></div>
+        <div><dt>Alimento</dt><dd>{{ adoptante.alimento || '—' }}</dd></div>
+        <div><dt>Frecuencia</dt><dd>{{ frecuencia(adoptante.frecuencia_alimentacion) }}</dd></div>
+        <div><dt>Estado de bienestar</dt><dd>{{ bienestar(adoptante.estado_bienestar) }}</dd></div>
+        <div><dt>Nivel de actividad</dt><dd>{{ actividad(adoptante.nivel_actividad) }}</dd></div>
+        <div><dt>Vacunas al día</dt><dd>{{ si(adoptante.vacunas_al_dia) }}</dd></div>
+        <div><dt>Visita veterinaria reciente</dt><dd>{{ si(adoptante.visita_veterinaria) }}</dd></div>
+        @if (adoptante.condiciones_vivienda) {
+          <div class="full"><dt>Condiciones de vivienda</dt><dd>{{ adoptante.condiciones_vivienda }}</dd></div>
+        }
+        @if (adoptante.observaciones) {
+          <div class="full"><dt>Observaciones</dt><dd>{{ adoptante.observaciones }}</dd></div>
+        }
+      </dl>
+
+      @if (adoptante.fotos && adoptante.fotos.length) {
+        <h4 class="fotos-titulo">Fotografías recientes</h4>
+        <div class="galeria">
+          @for (f of adoptante.fotos; track $index) {
+            <img class="galeria__img" [src]="f" [alt]="adoptante.mascota_nombre" />
+          }
+        </div>
+      }
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cerrar()">Cerrar</button>
+</mat-dialog-actions>

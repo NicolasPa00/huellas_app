@@ -1,0 +1,106 @@
+.title-ic {
+  vertical-align: middle;
+  margin-right: 4px;
+  color: var(--hc-color-primary);
+}
+
+.intro {
+  margin-bottom: var(--hc-space-md);
+}
+
+.bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font: var(--hc-text-caption);
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--hc-radius-pill);
+}
+.estado mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+.estado--ok { background: var(--hc-color-success-soft); color: var(--hc-color-success); }
+.estado--pend { background: #fdf3d8; color: #b8860b; }
+
+.enlace-label {
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-subtle);
+  margin-bottom: calc(-1 * var(--hc-space-sm) + 2px);
+}
+.enlace {
+  display: flex;
+  align-items: center;
+  gap: var(--hc-space-xs);
+  border: 1px solid var(--hc-color-border);
+  border-radius: var(--hc-radius-md);
+  padding: 2px 2px 2px var(--hc-space-sm);
+  background: var(--hc-color-surface);
+}
+.enlace__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: var(--hc-text-body);
+  color: var(--hc-color-text-muted);
+  min-width: 0;
+}
+.compartir {
+  display: flex;
+  gap: var(--hc-space-sm);
+  flex-wrap: wrap;
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hc-space-sm) var(--hc-space-md);
+  margin: 0;
+}
+.datos .full {
+  grid-column: 1 / -1;
+}
+.datos dt {
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-subtle);
+  margin-bottom: 2px;
+}
+.datos dd {
+  margin: 0;
+  font: var(--hc-text-body);
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.fotos-titulo {
+  font: var(--hc-text-label);
+  margin: var(--hc-space-xs) 0 0;
+}
+.galeria {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hc-space-sm);
+}
+.galeria__img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--hc-radius-md);
+  border: 1px solid var(--hc-color-border);
+}
+
+@media (max-width: 480px) {
+  .datos {
+    grid-template-columns: 1fr;
+  }
+}

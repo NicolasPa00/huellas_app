@@ -1,0 +1,173 @@
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__text">
+      <span class="hero__eyebrow">🐾 Juntos contra el abandono animal</span>
+      <h1 class="hero__titulo">Adopta, cuida y acompaña</h1>
+      <p class="hero__sub">
+        Combatimos el abandono por dos caminos: dándole un hogar a quien lo busca y apoyando a
+        quienes ya conviven con una mascota y enfrentan dificultades.
+      </p>
+      <div class="hero__cta">
+        <a mat-flat-button color="primary" routerLink="/mascotas">
+          <mat-icon>pets</mat-icon> Quiero adoptar
+        </a>
+        <a mat-stroked-button color="primary" routerLink="/asistente">
+          <mat-icon>support_agent</mat-icon> Necesito ayuda con mi mascota
+        </a>
+      </div>
+    </div>
+    <div class="hero__art" aria-hidden="true">🐶🐱</div>
+  </div>
+</section>
+
+<!-- ===== Estadísticas ===== -->
+@if (stats(); as s) {
+  <section class="stats">
+    <ui-stat-card icono="pets" [valor]="s.mascotas_disponibles" etiqueta="Mascotas en adopción" tono="primary" />
+    <ui-stat-card icono="favorite" [valor]="s.adopciones_realizadas" etiqueta="Adopciones realizadas" tono="secondary" />
+    <ui-stat-card icono="home_work" [valor]="s.refugios_participantes" etiqueta="Refugios participantes" tono="info" />
+  </section>
+}
+
+<!-- ===== Dos ejes: Adopción + Asistente ===== -->
+<section class="bloque">
+  <div class="ejes__intro">
+    <h2 class="hc-h2">Dos formas de sumar contra el abandono</h2>
+    <p class="hc-body">Elige el camino que necesitas hoy. Sin registro y de forma gratuita.</p>
+  </div>
+  <div class="ejes">
+    <ui-card [hover]="true" class="eje eje--adopcion">
+      <div class="eje__icon"><mat-icon>volunteer_activism</mat-icon></div>
+      <h3 class="hc-h2">Adopción</h3>
+      <p class="hc-body">Dale un hogar a una mascota que lo espera.</p>
+      <ul class="eje__lista">
+        <li><mat-icon>check</mat-icon> Catálogo de mascotas disponibles</li>
+        <li><mat-icon>check</mat-icon> Solicitud responsable sin crear cuenta</li>
+        <li><mat-icon>check</mat-icon> Recomendación IA según tu hogar</li>
+      </ul>
+      <div class="eje__cta">
+        <a mat-flat-button color="primary" routerLink="/mascotas">
+          <mat-icon>pets</mat-icon> Ver mascotas
+        </a>
+        <button mat-stroked-button color="primary" type="button" (click)="abrirIa()">
+          <mat-icon>auto_awesome</mat-icon> Recomendación IA
+        </button>
+      </div>
+    </ui-card>
+
+    <ui-card [hover]="true" class="eje eje--asistente">
+      <div class="eje__icon eje__icon--alt"><mat-icon>support_agent</mat-icon></div>
+      <h3 class="hc-h2">Asistente</h3>
+      <p class="hc-body">¿Tienes dificultades con tu mascota? Te acompañamos.</p>
+      <ul class="eje__lista">
+        <li><mat-icon>check</mat-icon> Recomendaciones de comportamiento</li>
+        <li><mat-icon>check</mat-icon> Veterinarias especializadas</li>
+        <li><mat-icon>check</mat-icon> Refugios para una entrega responsable</li>
+      </ul>
+      <div class="eje__cta">
+        <a mat-flat-button color="primary" routerLink="/asistente">
+          <mat-icon>tips_and_updates</mat-icon> Ir al asistente
+        </a>
+      </div>
+    </ui-card>
+  </div>
+</section>
+
+<!-- ===== Mascotas destacadas ===== -->
+@if (destacadas().length) {
+  <section class="bloque">
+    <div class="bloque__head">
+      <h2 class="hc-h2">Conoce a quienes buscan hogar</h2>
+      <a mat-button color="primary" routerLink="/mascotas">Ver todas <mat-icon>chevron_right</mat-icon></a>
+    </div>
+    <div class="grid-mascotas">
+      @for (m of destacadas(); track m.id) {
+        <ui-card [hover]="true" [flush]="true">
+          <button class="card-link" type="button" (click)="verPerfil(m)">
+            <div class="foto">
+              @if (m.foto_principal) {
+                <img [src]="m.foto_principal" [alt]="m.nombre" />
+              } @else {
+                <mat-icon class="sin-foto">pets</mat-icon>
+              }
+            </div>
+            <div class="cuerpo">
+              <h3 class="hc-h3">{{ m.nombre }}</h3>
+              <p class="hc-caption">{{ m.especie }} · {{ edad(m) }}</p>
+              <p class="ubicacion hc-caption"><mat-icon>place</mat-icon> {{ ubicacion(m) }}</p>
+            </div>
+          </button>
+        </ui-card>
+      }
+    </div>
+  </section>
+}
+
+<!-- ===== Proceso de adopción ===== -->
+<section class="bloque proceso">
+  <div class="bloque__head">
+    <h2 class="hc-h2">¿Cómo funciona?</h2>
+    <a mat-button color="primary" routerLink="/como-adoptar">Ver el proceso completo <mat-icon>chevron_right</mat-icon></a>
+  </div>
+  <div class="pasos">
+    @for (p of pasos.slice(0, 3); track p.numero) {
+      <ui-card>
+        <div class="paso">
+          <div class="paso__icono"><mat-icon>{{ p.icono }}</mat-icon></div>
+          <div>
+            <span class="paso__num">Paso {{ p.numero }}</span>
+            <h3 class="hc-h3">{{ p.titulo }}</h3>
+            <p class="hc-caption">{{ p.descripcion }}</p>
+          </div>
+        </div>
+      </ui-card>
+    }
+  </div>
+</section>
+
+<!-- ===== Refugios participantes ===== -->
+@if (refugios().length) {
+  <section class="bloque">
+    <div class="bloque__head">
+      <h2 class="hc-h2">Refugios participantes</h2>
+      <a mat-button color="primary" routerLink="/refugios">Ver todos <mat-icon>chevron_right</mat-icon></a>
+    </div>
+    <div class="grid-refugios">
+      @for (r of refugios(); track r.id) {
+        <ui-card [hover]="true">
+          <a class="refugio-card" [routerLink]="['/refugios', r.id]">
+            <div class="refugio-card__logo">{{ r.nombre.charAt(0) }}</div>
+            <div>
+              <h3 class="hc-h3">{{ r.nombre }}</h3>
+              <p class="hc-caption">{{ r.ciudad ?? 'Ubicación no indicada' }} · {{ aniosRefugio(r) }} año(s)</p>
+              <p class="hc-caption">{{ r.mascotas_disponibles }} mascota(s) en adopción</p>
+            </div>
+          </a>
+        </ui-card>
+      }
+    </div>
+  </section>
+}
+
+<!-- ===== Testimonios ===== -->
+<section class="bloque testimonios">
+  <div class="bloque__head"><h2 class="hc-h2">Historias de éxito</h2></div>
+  <div class="grid-testimonios">
+    @for (t of testimonios; track t.mascota) {
+      <ui-card>
+        <p class="testimonio__texto">“{{ t.texto }}”</p>
+        <p class="testimonio__autor">{{ t.emoji }} {{ t.adoptante }} adoptó a {{ t.mascota }} · {{ t.ciudad }}</p>
+      </ui-card>
+    }
+  </div>
+</section>
+
+<!-- ===== CTA final ===== -->
+<section class="cta-final">
+  <h2 class="hc-h1">¿List@ para cambiar dos vidas?</h2>
+  <p class="hc-body">La tuya y la de tu nuevo mejor amigo.</p>
+  <a mat-flat-button color="primary" routerLink="/mascotas">
+    <mat-icon>pets</mat-icon> Explorar mascotas
+  </a>
+</section>

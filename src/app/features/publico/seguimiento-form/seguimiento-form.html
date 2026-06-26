@@ -1,0 +1,183 @@
+<div class="seg-page">
+  @if (cargando()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <!-- Enlace inválido -->
+  @if (noValido()) {
+    <div class="estado-card">
+      <div class="estado-card__icon estado-card__icon--warn"><mat-icon>link_off</mat-icon></div>
+      <h1 class="hc-h2">Enlace no válido</h1>
+      <p class="hc-body">
+        Este enlace de seguimiento no existe o ya no está disponible. Solicita uno nuevo al refugio.
+      </p>
+    </div>
+  }
+
+  <!-- Ya estaba diligenciado -->
+  @if (yaCompletado() && !enviado()) {
+    <div class="estado-card">
+      <div class="estado-card__icon"><mat-icon>verified</mat-icon></div>
+      <h1 class="hc-h2">Este seguimiento ya fue enviado</h1>
+      <p class="hc-body">
+        Gracias por mantenernos al tanto del bienestar de
+        {{ seguimiento()?.mascota_nombre }}. 🐾
+      </p>
+    </div>
+  }
+
+  <!-- Enviado con éxito -->
+  @if (enviado()) {
+    <div class="estado-card">
+      <div class="estado-card__icon"><mat-icon>favorite</mat-icon></div>
+      <h1 class="hc-h2">¡Gracias por tu seguimiento!</h1>
+      <p class="hc-body">
+        Registramos cómo está {{ seguimiento()?.mascota_nombre }}. Tu reporte ayuda al refugio a
+        confirmar que tu compañero está sano y feliz. 💚
+      </p>
+    </div>
+  }
+
+  <!-- Formulario -->
+  @if (!cargando() && !noValido() && !yaCompletado() && !enviado()) {
+    @let s = seguimiento();
+    <div class="cab">
+      @if (s?.mascota_foto) {
+        <img class="cab__foto" [src]="s?.mascota_foto" [alt]="s?.mascota_nombre" />
+      } @else {
+        <div class="cab__foto cab__foto--ph"><mat-icon>pets</mat-icon></div>
+      }
+      <div>
+        <p class="cab__refugio">{{ s?.refugio_nombre }}</p>
+        <h1 class="hc-h1">¿Cómo está {{ s?.mascota_nombre }}?</h1>
+        <p class="hc-caption">
+          Cuéntanos cómo se encuentra {{ s?.mascota_nombre }} desde que llegó a tu hogar. Esta
+          información ayuda al refugio a verificar su bienestar tras la adopción.
+        </p>
+      </div>
+    </div>
+
+    @if (enviando()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    <form [formGroup]="form" class="form" (ngSubmit)="enviar()">
+      <h3 class="grupo">Alimentación y peso</h3>
+      <div class="grid">
+        <mat-form-field>
+          <mat-label>Peso actual (kg)</mat-label>
+          <input matInput type="number" step="0.1" min="0" formControlName="peso_kg" />
+          @if (form.controls.peso_kg.hasError('required')) {
+            <mat-error>Indícanos el peso actual</mat-error>
+          }
+          @if (form.controls.peso_kg.hasError('min') || form.controls.peso_kg.hasError('max')) {
+            <mat-error>Ingresa un peso válido</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Frecuencia de alimentación</mat-label>
+          <mat-select formControlName="frecuencia_alimentacion">
+            @for (f of frecuencias; track f.valor) {
+              <mat-option [value]="f.valor">{{ f.etiqueta }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.frecuencia_alimentacion.hasError('required')) {
+            <mat-error>Selecciona una opción</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <mat-form-field class="full">
+        <mat-label>¿Qué alimento recibe?</mat-label>
+        <input matInput formControlName="alimento" placeholder="Marca/tipo de concentrado, dieta, etc." />
+        @if (form.controls.alimento.hasError('required')) {
+          <mat-error>Cuéntanos qué come</mat-error>
+        }
+      </mat-form-field>
+
+      <h3 class="grupo">Salud y bienestar</h3>
+      <mat-form-field class="full">
+        <mat-label>Estado general de bienestar</mat-label>
+        <mat-select formControlName="estado_bienestar">
+          @for (e of estadosBienestar; track e.valor) {
+            <mat-option [value]="e.valor">{{ e.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.estado_bienestar.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="full">
+        <mat-label>Nivel de actividad</mat-label>
+        <mat-select formControlName="nivel_actividad">
+          @for (n of nivelesActividad; track n.valor) {
+            <mat-option [value]="n.valor">{{ n.etiqueta }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.nivel_actividad.hasError('required')) {
+          <mat-error>Selecciona una opción</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="radio-row">
+        <span class="radio-row__label">¿Tiene las vacunas al día?</span>
+        <mat-radio-group formControlName="vacunas_al_dia">
+          <mat-radio-button [value]="true">Sí</mat-radio-button>
+          <mat-radio-button [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="radio-row">
+        <span class="radio-row__label">¿Ha visitado al veterinario recientemente?</span>
+        <mat-radio-group formControlName="visita_veterinaria">
+          <mat-radio-button [value]="true">Sí</mat-radio-button>
+          <mat-radio-button [value]="false">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <h3 class="grupo">Entorno y comentarios</h3>
+      <mat-form-field class="full">
+        <mat-label>Condiciones de vivienda (opcional)</mat-label>
+        <textarea
+          matInput
+          rows="2"
+          formControlName="condiciones_vivienda"
+          placeholder="¿Dónde duerme, tiene patio o espacio para moverse?"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field class="full">
+        <mat-label>Observaciones (opcional)</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          formControlName="observaciones"
+          placeholder="Cualquier cosa que quieras contarnos sobre su comportamiento, salud o adaptación"
+        ></textarea>
+      </mat-form-field>
+
+      <h3 class="grupo">Fotografías recientes</h3>
+      <p class="hc-caption">Sube hasta 5 fotos actuales de {{ s?.mascota_nombre }} (opcional).</p>
+      <div class="fotos">
+        @for (f of fotos(); track $index) {
+          <div class="foto">
+            <img [src]="f" alt="Foto reciente" />
+            <button type="button" class="foto__quitar" (click)="quitarFoto($index)" aria-label="Quitar">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+        @if (fotos().length < 5) {
+          <label class="foto-add">
+            <mat-icon>add_a_photo</mat-icon>
+            <span>Agregar</span>
+            <input type="file" accept="image/*" multiple (change)="onFotos($event)" hidden />
+          </label>
+        }
+      </div>
+
+      <div class="acciones">
+        <button mat-flat-button color="primary" type="submit" [disabled]="enviando()">
+          <mat-icon>send</mat-icon> Enviar seguimiento
+        </button>
+      </div>
+    </form>
+  }
+</div>

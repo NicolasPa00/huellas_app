@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.barra .titulo {
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.page-body {
+  display: block;
+  max-width: 820px;
+}
+
+.tab-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+  padding-top: var(--hc-space-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hc-space-md);
+}
+
+.full {
+  width: 100%;
+}
+
+.toggles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+  margin: var(--hc-space-xs) 0;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--hc-space-xs);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

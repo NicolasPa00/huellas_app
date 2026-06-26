@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{ r.nombre }}</h2>
+
+<mat-dialog-content>
+  <div class="estado">
+    @if (r.verificado) {
+      <span class="badge badge--ok"><mat-icon>verified</mat-icon> Verificado</span>
+    } @else {
+      <span class="badge badge--warn"><mat-icon>error_outline</mat-icon> Sin verificar</span>
+    }
+    @if (!r.activo) {
+      <span class="badge badge--muted"><mat-icon>block</mat-icon> Inactivo</span>
+    }
+  </div>
+
+  @if (r.descripcion) {
+    <p class="desc hc-body">{{ r.descripcion }}</p>
+  }
+
+  <h3 class="grupo">Información general</h3>
+  <dl class="datos">
+    <div><dt>NIT</dt><dd>{{ r.nit || '—' }}</dd></div>
+    <div><dt>Capacidad máxima</dt><dd>{{ r.capacidad_maxima ?? '—' }}</dd></div>
+  </dl>
+
+  <h3 class="grupo">Ubicación</h3>
+  <dl class="datos">
+    <div class="full"><dt>Dirección</dt><dd>{{ r.direccion || '—' }}</dd></div>
+    <div><dt>Ciudad</dt><dd>{{ r.ciudad || '—' }}</dd></div>
+    <div><dt>Departamento</dt><dd>{{ r.departamento || '—' }}</dd></div>
+    <div><dt>Latitud</dt><dd>{{ r.latitud ?? '—' }}</dd></div>
+    <div><dt>Longitud</dt><dd>{{ r.longitud ?? '—' }}</dd></div>
+  </dl>
+
+  <h3 class="grupo">Contacto</h3>
+  <dl class="datos">
+    <div><dt>Teléfono</dt><dd>{{ r.telefono || '—' }}</dd></div>
+    <div><dt>Correo</dt><dd>{{ r.email_contacto || '—' }}</dd></div>
+    <div class="full"><dt>Sitio web</dt><dd>{{ r.sitio_web || '—' }}</dd></div>
+  </dl>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

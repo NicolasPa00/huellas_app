@@ -1,0 +1,177 @@
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar mascota' : 'Registrar mascota' }}</h2>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form">
+    <h3 class="grupo">Datos básicos</h3>
+    <mat-form-field class="full">
+      <mat-label>Refugio</mat-label>
+      <mat-select formControlName="refugio_id">
+        @for (r of refugios(); track r.id) {
+          <mat-option [value]="r.id">{{ r.nombre }}</mat-option>
+        }
+      </mat-select>
+      @if (refugios().length === 0) {
+        <mat-hint>Primero debes registrar un refugio.</mat-hint>
+      }
+      @if (form.controls.refugio_id.hasError('required')) {
+        <mat-error>Selecciona un refugio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      @if (form.controls.nombre.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Especie</mat-label>
+        <mat-select formControlName="especie_id">
+          @for (e of especiesOrdenadas; track e.id) {
+            <mat-option [value]="e.id">{{ e.nombre }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.especie_id.hasError('required')) {
+          <mat-error>Selecciona la especie</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Raza</mat-label>
+        <mat-select formControlName="raza_id" [disabled]="!form.controls.especie_id.value">
+          <mat-option [value]="null">Sin especificar</mat-option>
+          @for (ra of razasFiltradas; track ra.id) {
+            <mat-option [value]="ra.id">{{ ra.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Sexo</mat-label>
+        <mat-select formControlName="sexo">
+          <mat-option value="">Sin especificar</mat-option>
+          <mat-option value="M">Macho</mat-option>
+          <mat-option value="H">Hembra</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="estado_mascota_id">
+          @for (em of catalogos()?.estadosMascota; track em.id) {
+            <mat-option [value]="em.id">{{ em.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <h3 class="grupo">Características</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input matInput type="date" formControlName="fecha_nacimiento" />
+        <mat-hint>La edad se calcula automáticamente</mat-hint>
+      </mat-form-field>
+      <div class="edad-calculada">
+        <span class="edad-calculada__label">Edad</span>
+        <span class="edad-calculada__valor">{{ edadCalculada }}</span>
+      </div>
+      <mat-form-field>
+        <mat-label>Tamaño</mat-label>
+        <mat-select formControlName="tamano_id">
+          <mat-option [value]="null">Sin especificar</mat-option>
+          @for (t of catalogos()?.tamanos; track t.id) {
+            <mat-option [value]="t.id">{{ t.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Nivel de energía</mat-label>
+        <mat-select formControlName="nivel_energia_id">
+          <mat-option [value]="null">Sin especificar</mat-option>
+          @for (ne of catalogos()?.nivelesEnergia; track ne.id) {
+            <mat-option [value]="ne.id">{{ ne.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Peso (kg)</mat-label>
+        <input matInput type="number" step="any" min="0" formControlName="peso_kg" />
+      </mat-form-field>
+    </div>
+    <mat-slide-toggle formControlName="esterilizado">Esterilizado/a</mat-slide-toggle>
+
+    <h3 class="grupo">Salud y comportamiento</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Estado de vacunación</mat-label>
+        <mat-select formControlName="estado_vacunacion">
+          <mat-option value="">Sin especificar</mat-option>
+          @for (op of opcionesVacunacion; track op.valor) {
+            <mat-option [value]="op.valor">{{ op.etiqueta }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Comportamientos</mat-label>
+        <mat-select formControlName="comportamientos" multiple>
+          @for (p of catalogos()?.problemasComportamiento; track p.id) {
+            <mat-option [value]="p.id">{{ p.nombre }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full">
+      <mat-label>Estado de salud</mat-label>
+      <textarea matInput rows="2" formControlName="estado_salud"></textarea>
+    </mat-form-field>
+    <mat-form-field class="full">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput rows="2" formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+    <h3 class="grupo">Fotografía</h3>
+    <div class="foto-upload">
+      <div class="foto-upload__preview">
+        @if (fotoPreview()) {
+          <img [src]="fotoPreview()" alt="Vista previa de la mascota" />
+        } @else {
+          <mat-icon>add_a_photo</mat-icon>
+        }
+      </div>
+      <div class="foto-upload__controls">
+        <input
+          #fileInput
+          type="file"
+          accept="image/*"
+          hidden
+          (change)="onArchivo($event)"
+        />
+        <button type="button" mat-stroked-button (click)="fileInput.click()">
+          <mat-icon>upload</mat-icon>
+          {{ fotoPreview() ? 'Cambiar imagen' : 'Subir imagen' }}
+        </button>
+        @if (fotoPreview()) {
+          <button type="button" mat-button color="warn" (click)="quitarFoto()">
+            <mat-icon>delete</mat-icon> Quitar
+          </button>
+        }
+        <p class="foto-upload__hint hc-caption">Formatos de imagen · máx. 2 MB</p>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" (click)="cerrar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="guardando()">
+    {{ esEdicion ? 'Guardar cambios' : 'Registrar' }}
+  </button>
+</mat-dialog-actions>

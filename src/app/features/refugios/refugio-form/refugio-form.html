@@ -1,0 +1,85 @@
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar refugio' : 'Registrar refugio' }}</h2>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="dialog-form">
+    <h3 class="grupo">Información general</h3>
+    <mat-form-field class="full">
+      <mat-label>Nombre del refugio</mat-label>
+      <input matInput formControlName="nombre" />
+      @if (form.controls.nombre.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput rows="2" formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>NIT</mat-label>
+        <input matInput formControlName="nit" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Capacidad máxima</mat-label>
+        <input matInput type="number" min="0" formControlName="capacidad_maxima" />
+      </mat-form-field>
+    </div>
+
+    <h3 class="grupo">Ubicación</h3>
+    <mat-form-field class="full">
+      <mat-label>Dirección</mat-label>
+      <input matInput formControlName="direccion" />
+    </mat-form-field>
+
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Departamento</mat-label>
+        <input matInput formControlName="departamento" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Latitud</mat-label>
+        <input matInput type="number" step="any" formControlName="latitud" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Longitud</mat-label>
+        <input matInput type="number" step="any" formControlName="longitud" />
+      </mat-form-field>
+    </div>
+
+    <h3 class="grupo">Contacto</h3>
+    <div class="grid">
+      <mat-form-field>
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Correo de contacto</mat-label>
+        <input matInput type="email" formControlName="email_contacto" />
+        @if (form.controls.email_contacto.hasError('email')) {
+          <mat-error>Correo no válido</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <mat-form-field class="full">
+      <mat-label>Sitio web</mat-label>
+      <input matInput formControlName="sitio_web" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" (click)="cerrar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="guardando()">
+    {{ esEdicion ? 'Guardar cambios' : 'Registrar' }}
+  </button>
+</mat-dialog-actions>

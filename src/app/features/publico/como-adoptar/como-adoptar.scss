@@ -1,0 +1,82 @@
+:host {
+  display: block;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--hc-space-xl) var(--hc-space-lg) var(--hc-space-2xl);
+}
+
+.head {
+  text-align: center;
+  margin-bottom: var(--hc-space-xl);
+}
+.head__eyebrow {
+  display: inline-block;
+  font: var(--hc-text-label);
+  color: var(--hc-color-primary-strong);
+  background: var(--hc-color-primary-soft);
+  border-radius: var(--hc-radius-pill);
+  padding: 4px 14px;
+}
+.head h1 {
+  margin: var(--hc-space-sm) 0;
+}
+.head p {
+  color: var(--hc-color-text-muted);
+  max-width: 54ch;
+  margin: 0 auto;
+}
+
+.pasos {
+  display: grid;
+  gap: var(--hc-space-md);
+}
+.pasos ui-card {
+  display: block;
+}
+.paso {
+  display: flex;
+  align-items: center;
+  gap: var(--hc-space-md);
+}
+.paso__badge {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--hc-radius-pill);
+  background: var(--hc-color-primary);
+  color: var(--hc-color-on-primary);
+  display: grid;
+  place-items: center;
+  font: var(--hc-text-h3);
+  flex-shrink: 0;
+}
+.paso__icono {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--hc-radius-md);
+  background: var(--hc-color-primary-soft);
+  color: var(--hc-color-primary);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.paso__texto {
+  flex: 1;
+}
+
+.cta {
+  text-align: center;
+  margin: var(--hc-space-xl) 0;
+}
+
+.faq {
+  margin-top: var(--hc-space-xl);
+}
+.faq h2 {
+  margin-bottom: var(--hc-space-md);
+}
+.faq__acordeon {
+  display: block;
+}
+.faq__acordeon p {
+  color: var(--hc-color-text-muted);
+}

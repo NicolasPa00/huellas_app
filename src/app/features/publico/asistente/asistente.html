@@ -1,0 +1,252 @@
+<section class="hero">
+  <span class="hero__eyebrow"><mat-icon>support_agent</mat-icon> Asistente de bienestar</span>
+  <h1 class="hero__title">Estamos contigo en cada etapa con tu mascota</h1>
+  <p class="hero__sub">
+    Antes que el abandono, hay soluciones. Encuentra recomendaciones de comportamiento, veterinarias
+    especializadas y, si ya no puedes tener a tu mascota, refugios para una entrega responsable.
+    Gratuito y sin iniciar sesión.
+  </p>
+</section>
+
+<!-- Navegación entre escenarios -->
+<div class="segmentos">
+  <button type="button" class="segmento" [class.segmento--activo]="seccion() === 'recomendaciones'"
+          (click)="irA('recomendaciones')">
+    <mat-icon>tips_and_updates</mat-icon>
+    <span>Recomendaciones</span>
+  </button>
+  <button type="button" class="segmento" [class.segmento--activo]="seccion() === 'veterinarias'"
+          (click)="irA('veterinarias')">
+    <mat-icon>local_hospital</mat-icon>
+    <span>Veterinarias</span>
+  </button>
+  <button type="button" class="segmento" [class.segmento--activo]="seccion() === 'refugios'"
+          (click)="irA('refugios')">
+    <mat-icon>volunteer_activism</mat-icon>
+    <span>Entrega responsable</span>
+  </button>
+</div>
+
+<!-- ============ 1) RECOMENDACIONES ============ -->
+@if (seccion() === 'recomendaciones') {
+  @if (cargando()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <h2 class="seccion">1 · Elige el comportamiento</h2>
+  <div class="problemas">
+    @for (p of problemas(); track p.id) {
+      <button
+        type="button"
+        class="problema"
+        [class.problema--activo]="seleccionado()?.id === p.id"
+        (click)="seleccionar(p)"
+      >
+        <span class="problema__icon"><mat-icon>{{ icono(p.codigo) }}</mat-icon></span>
+        <span class="problema__nombre">{{ p.nombre }}</span>
+      </button>
+    }
+  </div>
+
+  @if (seleccionado(); as sel) {
+    <ui-card>
+      <h2 class="seccion seccion--card">2 · Cuéntanos un poco más (opcional)</h2>
+      @if (sel.descripcion) {
+        <p class="hc-caption descripcion">{{ sel.descripcion }}</p>
+      }
+      <p class="hc-caption descripcion">
+        Mientras más detalles nos des, más personalizada será la orientación.
+      </p>
+      <form [formGroup]="form" class="form">
+        <mat-form-field>
+          <mat-label>Especie</mat-label>
+          <mat-select formControlName="especie_id">
+            <mat-option [value]="null">Sin especificar</mat-option>
+            @for (e of especies(); track e.id) {
+              <mat-option [value]="e.id">{{ e.nombre }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full">
+          <mat-label>Describe los síntomas o la situación</mat-label>
+          <textarea
+            matInput
+            rows="3"
+            formControlName="descripcion_sintomas"
+            placeholder="Ej: ladra y rompe cosas cuando lo dejo solo por la mañana"
+          ></textarea>
+        </mat-form-field>
+        <div class="form__actions">
+          <button mat-stroked-button type="button" (click)="reiniciar()">Reiniciar</button>
+          <button mat-flat-button color="primary" type="button" (click)="consultar()" [disabled]="consultando()">
+            <mat-icon>tips_and_updates</mat-icon> Obtener recomendaciones
+          </button>
+        </div>
+      </form>
+    </ui-card>
+  }
+
+  @if (consultando()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  @if (resultado(); as r) {
+    <section class="resultado">
+      <h2 class="seccion">
+        <mat-icon>tips_and_updates</mat-icon> Recomendaciones para «{{ r.problema.nombre }}»
+      </h2>
+      <div class="recos">
+        @for (rec of r.recomendaciones; track rec.titulo; let i = $index) {
+          <ui-card [hover]="true">
+            <div class="reco">
+              <span class="reco__num">{{ i + 1 }}</span>
+              <div class="reco__texto">
+                <h3 class="hc-h3">{{ rec.titulo }}</h3>
+                <p class="hc-body">{{ rec.descripcion }}</p>
+              </div>
+            </div>
+          </ui-card>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Escalada responsable: siempre visible en Recomendaciones -->
+  <ui-card class="escalada">
+    <div class="escalada__txt">
+      <mat-icon>support_agent</mat-icon>
+      <p class="hc-body">
+        Si las sugerencias iniciales no han sido suficientes, considera acudir a un servicio más
+        especializado. Y si la situación te supera, pide ayuda antes de llegar al abandono.
+      </p>
+    </div>
+    <div class="escalada__acc">
+      <button mat-stroked-button color="primary" type="button" (click)="irA('veterinarias')">
+        <mat-icon>local_hospital</mat-icon> Veterinarias
+      </button>
+      <button mat-flat-button class="hc-btn-coral" type="button" (click)="abrirAuxilio()">
+        <mat-icon>sos</mat-icon> Pedir ayuda
+      </button>
+    </div>
+  </ui-card>
+}
+
+<!-- ============ 2) VETERINARIAS ============ -->
+@if (seccion() === 'veterinarias') {
+  <h2 class="seccion"><mat-icon>local_hospital</mat-icon> Asesoría avanzada: veterinarias especializadas</h2>
+  <p class="intro hc-body">
+    Si las recomendaciones básicas no funcionaron, intenta con un servicio veterinario especializado
+    en el área que tu mascota necesita. Filtra por especialidad:
+  </p>
+
+  <div class="chips">
+    <button type="button" class="chip" [class.chip--activo]="areaVet() === null" (click)="areaVet.set(null)">
+      Todas
+    </button>
+    @for (a of areas; track a.codigo) {
+      <button type="button" class="chip" [class.chip--activo]="areaVet() === a.codigo" (click)="toggleArea(a.codigo)">
+        <mat-icon>{{ a.icono }}</mat-icon> {{ a.etiqueta }}
+      </button>
+    }
+  </div>
+
+  <div class="vets">
+    @for (v of veterinariasFiltradas(); track v.nombre) {
+      <ui-card [hover]="true">
+        <div class="vet">
+          <div class="vet__head">
+            <div class="vet__logo"><mat-icon>local_hospital</mat-icon></div>
+            <div>
+              <h3 class="hc-h3">{{ v.nombre }}</h3>
+              <p class="hc-caption"><mat-icon class="ic">place</mat-icon> {{ v.ciudad }} · {{ v.direccion }}</p>
+            </div>
+          </div>
+          <p class="hc-body vet__desc">{{ v.descripcion }}</p>
+          <div class="vet__areas">
+            @for (codigo of v.areas; track codigo) {
+              <span class="area-tag">{{ etiquetaArea(codigo) }}</span>
+            }
+          </div>
+          <a class="vet__tel" [href]="'tel:' + v.telefono"><mat-icon>call</mat-icon> {{ v.telefono }}</a>
+        </div>
+      </ui-card>
+    }
+  </div>
+
+  <!-- Escalada responsable: del servicio especializado a la entrega responsable -->
+  <ui-card class="escalada">
+    <div class="escalada__txt">
+      <mat-icon>volunteer_activism</mat-icon>
+      <p class="hc-body">
+        Si aun con apoyo especializado ya no puedes hacerte cargo de tu mascota, la entrega
+        responsable a un refugio es siempre mejor que el abandono.
+      </p>
+    </div>
+    <div class="escalada__acc">
+      <button mat-stroked-button color="primary" type="button" (click)="irA('refugios')">
+        <mat-icon>home_work</mat-icon> Ver refugios
+      </button>
+      <button mat-flat-button class="hc-btn-coral" type="button" (click)="abrirAuxilio()">
+        <mat-icon>sos</mat-icon> Pedir ayuda
+      </button>
+    </div>
+  </ui-card>
+}
+
+<!-- ============ 3) ENTREGA RESPONSABLE ============ -->
+@if (seccion() === 'refugios') {
+  <h2 class="seccion"><mat-icon>volunteer_activism</mat-icon> Si ya no puedes tener a tu mascota</h2>
+  <ui-card class="aviso-card">
+    <div class="aviso">
+      <p class="hc-body">
+        Entendemos que las circunstancias cambian. Antes de abandonar a una mascota, contacta un refugio:
+        pueden orientarte y, según su disponibilidad, recibirla para buscarle un nuevo hogar. La entrega
+        responsable es siempre la mejor decisión para su bienestar.
+      </p>
+      <button mat-flat-button class="hc-btn-coral aviso__sos" type="button" (click)="abrirAuxilio()">
+        <mat-icon>sos</mat-icon> Auxilio
+      </button>
+    </div>
+  </ui-card>
+
+  @if (cargandoRefugios()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <div class="refugios">
+    @for (r of refugios(); track r.id) {
+      <ui-card [hover]="true">
+        <div class="refugio">
+          <div class="refugio__head">
+            <div class="refugio__logo">{{ r.nombre.charAt(0) }}</div>
+            <div>
+              <h3 class="hc-h3">
+                {{ r.nombre }}
+                @if (r.verificado) { <mat-icon class="verif" matTooltip="Verificado">verified</mat-icon> }
+              </h3>
+              <p class="hc-caption"><mat-icon class="ic">place</mat-icon> {{ r.ciudad ?? 'Ubicación no indicada' }}</p>
+            </div>
+          </div>
+          @if (r.descripcion) {
+            <p class="hc-caption refugio__desc">{{ r.descripcion }}</p>
+          }
+          <div class="refugio__contacto">
+            @if (r.telefono) {
+              <a [href]="'tel:' + r.telefono"><mat-icon>call</mat-icon> {{ r.telefono }}</a>
+            }
+            @if (r.email_contacto) {
+              <a [href]="'mailto:' + r.email_contacto"><mat-icon>mail</mat-icon> {{ r.email_contacto }}</a>
+            }
+          </div>
+          <a mat-stroked-button color="primary" [routerLink]="['/refugios', r.id]">
+            Ver refugio <mat-icon>chevron_right</mat-icon>
+          </a>
+        </div>
+      </ui-card>
+    }
+  </div>
+
+  @if (!cargandoRefugios() && refugios().length === 0) {
+    <p class="hc-caption">No hay refugios disponibles por ahora. Vuelve a intentarlo más tarde.</p>
+  }
+}

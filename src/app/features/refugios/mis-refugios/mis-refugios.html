@@ -1,0 +1,78 @@
+<ui-page-header titulo="Mis refugios" descripcion="Administra los refugios que gestionas.">
+  <button actions mat-flat-button color="primary" (click)="abrir()">
+    <mat-icon>add</mat-icon>
+    Registrar refugio
+  </button>
+</ui-page-header>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (!cargando() && refugios().length === 0) {
+  <ui-card>
+    <ui-empty-state
+      icono="home_work"
+      titulo="Aún no tienes refugios"
+      mensaje="Registra tu primer refugio para empezar a gestionar mascotas."
+    >
+      <button mat-flat-button color="primary" (click)="abrir()">
+        Registrar refugio
+      </button>
+    </ui-empty-state>
+  </ui-card>
+}
+
+<div class="lista">
+  @for (refugio of refugios(); track refugio.id) {
+    <ui-card [hover]="true">
+      <div class="item">
+        <div class="item__head">
+          <div class="item__title">
+            <h3 class="hc-h3">{{ refugio.nombre }}</h3>
+            <p class="hc-caption">
+              @if (refugio.ciudad) {
+                {{ refugio.ciudad }}@if (refugio.departamento) {, {{ refugio.departamento }}}
+              } @else {
+                Sin ubicación
+              }
+            </p>
+          </div>
+          @if (refugio.verificado) {
+            <span class="badge badge--ok"><mat-icon>verified</mat-icon> Verificado</span>
+          } @else {
+            <span class="badge badge--warn"><mat-icon>error_outline</mat-icon> Sin verificar</span>
+          }
+        </div>
+
+        @if (refugio.descripcion) {
+          <p class="item__desc hc-body">{{ refugio.descripcion }}</p>
+        }
+
+        <div class="item__meta">
+          @if (refugio.telefono) {
+            <span><mat-icon>call</mat-icon>{{ refugio.telefono }}</span>
+          }
+          @if (refugio.email_contacto) {
+            <span><mat-icon>mail</mat-icon>{{ refugio.email_contacto }}</span>
+          }
+          @if (refugio.capacidad_maxima != null) {
+            <span><mat-icon>pets</mat-icon>Capacidad {{ refugio.capacidad_maxima }}</span>
+          }
+        </div>
+
+        <div class="item__actions">
+          <button mat-button (click)="verDatos(refugio)">
+            <mat-icon>visibility</mat-icon> Ver datos
+          </button>
+          <button mat-button (click)="abrir(refugio.id)">
+            <mat-icon>edit</mat-icon> Editar
+          </button>
+          <button mat-button color="warn" (click)="eliminar(refugio)">
+            <mat-icon>delete</mat-icon> Desactivar
+          </button>
+        </div>
+      </div>
+    </ui-card>
+  }
+</div>

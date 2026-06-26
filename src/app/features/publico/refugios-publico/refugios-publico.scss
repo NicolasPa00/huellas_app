@@ -1,0 +1,81 @@
+:host {
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--hc-space-xl) var(--hc-space-lg);
+}
+
+.head p {
+  color: var(--hc-color-text-muted);
+  margin-top: 4px;
+}
+.barra {
+  margin: var(--hc-space-lg) 0 var(--hc-space-sm);
+}
+.barra mat-form-field {
+  min-width: 260px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--hc-space-md);
+}
+.refugio {
+  display: flex;
+  gap: var(--hc-space-md);
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+}
+.refugio__logo {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--hc-radius-md);
+  background: var(--hc-color-primary);
+  color: var(--hc-color-on-primary);
+  display: grid;
+  place-items: center;
+  font: var(--hc-text-h1);
+  flex-shrink: 0;
+}
+.refugio__body {
+  flex: 1;
+}
+.refugio__nombre {
+  display: flex;
+  align-items: center;
+  gap: var(--hc-space-xs);
+}
+.verificado {
+  color: var(--hc-color-info);
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.ubicacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--hc-color-text-subtle);
+  margin-top: 2px;
+}
+.metricas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hc-space-md);
+  margin-top: var(--hc-space-sm);
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-muted);
+}
+.metricas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ubicacion mat-icon,
+.metricas mat-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+}

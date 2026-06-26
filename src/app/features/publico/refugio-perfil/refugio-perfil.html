@@ -1,0 +1,89 @@
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (noEncontrado()) {
+  <div class="estado-vacio">
+    <mat-icon>sentiment_dissatisfied</mat-icon>
+    <h2 class="hc-h2">No encontramos este refugio</h2>
+    <a mat-flat-button color="primary" routerLink="/refugios">Ver todos los refugios</a>
+  </div>
+}
+
+@if (refugio(); as r) {
+  <nav class="migas">
+    <a routerLink="/refugios"><mat-icon>arrow_back</mat-icon> Volver a refugios</a>
+  </nav>
+
+  <!-- ===== Cabecera ===== -->
+  <ui-card>
+    <div class="cabecera">
+      <div class="cabecera__logo">{{ r.nombre.charAt(0) }}</div>
+      <div class="cabecera__info">
+        <div class="cabecera__nombre">
+          <h1 class="hc-h1">{{ r.nombre }}</h1>
+          @if (r.verificado) { <mat-icon class="verificado" title="Verificado">verified</mat-icon> }
+        </div>
+        @if (r.descripcion) { <p class="hc-body">{{ r.descripcion }}</p> }
+        <div class="metricas">
+          <span><mat-icon>place</mat-icon> {{ ubicacion() }}</span>
+          <span><mat-icon>calendar_month</mat-icon> {{ anios() }} año(s) de experiencia</span>
+          <span><mat-icon>pets</mat-icon> {{ r.mascotas_disponibles }} en adopción</span>
+          <span><mat-icon>favorite</mat-icon> {{ r.adopciones_realizadas }} adopciones exitosas</span>
+        </div>
+        <div class="contacto">
+          @if (r.telefono) { <span><mat-icon>call</mat-icon> {{ r.telefono }}</span> }
+          @if (r.email_contacto) { <a [href]="'mailto:' + r.email_contacto"><mat-icon>mail</mat-icon> {{ r.email_contacto }}</a> }
+          @if (r.direccion) { <span><mat-icon>home_work</mat-icon> {{ r.direccion }}</span> }
+          @if (r.sitio_web) { <a [href]="r.sitio_web" target="_blank" rel="noopener"><mat-icon>language</mat-icon> Sitio web</a> }
+        </div>
+      </div>
+    </div>
+  </ui-card>
+
+  <!-- ===== Mascotas del refugio ===== -->
+  <section class="bloque">
+    <h2 class="hc-h2 seccion-titulo">Mascotas en adopción</h2>
+    @if (mascotas().length === 0) {
+      <ui-card>
+        <ui-empty-state
+          icono="pets"
+          titulo="Sin mascotas disponibles ahora"
+          mensaje="Este refugio no tiene mascotas publicadas en este momento."
+        />
+      </ui-card>
+    }
+    <div class="grid">
+      @for (m of mascotas(); track m.id) {
+        <ui-card [hover]="true" [flush]="true">
+          <button class="card-link" type="button" (click)="verMascota(m)">
+            <div class="foto">
+              @if (m.foto_principal) {
+                <img [src]="m.foto_principal" [alt]="m.nombre" />
+              } @else {
+                <mat-icon class="sin-foto">pets</mat-icon>
+              }
+            </div>
+            <div class="cuerpo">
+              <h3 class="hc-h3">{{ m.nombre }}</h3>
+              <p class="hc-caption">{{ m.especie }} · {{ edad(m) }}</p>
+            </div>
+          </button>
+        </ui-card>
+      }
+    </div>
+  </section>
+
+  <!-- ===== Historias de éxito ===== -->
+  <section class="bloque">
+    <h2 class="hc-h2 seccion-titulo">Historias de adopciones exitosas</h2>
+    <div class="grid-testimonios">
+      @for (t of testimonios; track t.mascota) {
+        <ui-card>
+          <p class="testimonio__texto">“{{ t.texto }}”</p>
+          <p class="testimonio__autor">{{ t.emoji }} {{ t.adoptante }} · {{ t.ciudad }}</p>
+        </ui-card>
+      }
+    </div>
+  </section>
+}

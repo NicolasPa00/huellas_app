@@ -1,0 +1,80 @@
+<ui-page-header
+  [titulo]="'Bienvenido, ' + (usuario()?.nombre || '')"
+  descripcion="Este es el resumen de Huellas Conectadas."
+/>
+
+<!-- Estadísticas -->
+<section class="stats">
+  @for (s of stats; track s.etiqueta) {
+    <ui-stat-card
+      [icono]="s.icono"
+      [valor]="s.valor"
+      [etiqueta]="s.etiqueta"
+      [tendencia]="s.tendencia"
+      [tono]="s.tono"
+    />
+  }
+</section>
+
+<div class="grid-2">
+  <!-- Accesos rápidos -->
+  <section>
+    <h2 class="hc-h2 seccion-titulo">Accesos rápidos</h2>
+    <div class="accesos">
+      @for (a of accesos; track a.link) {
+        <a [routerLink]="a.link" class="acceso">
+          <ui-card [hover]="true">
+            <div class="acceso__row">
+              <div class="acceso__icon" [attr.data-tone]="a.tono">
+                <mat-icon>{{ a.icono }}</mat-icon>
+              </div>
+              <div class="acceso__text">
+                <h3 class="hc-h3">{{ a.titulo }}</h3>
+                <p class="hc-caption">{{ a.descripcion }}</p>
+              </div>
+              <mat-icon class="acceso__chevron">chevron_right</mat-icon>
+            </div>
+          </ui-card>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Actividad reciente -->
+  <section>
+    <h2 class="hc-h2 seccion-titulo">Actividad reciente</h2>
+    <ui-card class="actividad-card">
+      <ul class="actividad">
+        @for (act of actividad; track act.texto) {
+          <li class="actividad__item">
+            <div class="actividad__icon" [attr.data-tone]="act.tono">
+              <mat-icon>{{ act.icono }}</mat-icon>
+            </div>
+            <div class="actividad__text">
+              <span class="hc-body">{{ act.texto }}</span>
+              <span class="hc-caption">{{ act.tiempo }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+    </ui-card>
+  </section>
+</div>
+
+<!-- Distribución por especie -->
+<section class="distribucion-wrap">
+  <h2 class="hc-h2 seccion-titulo">Distribución por especie</h2>
+  <ui-card>
+    <div class="distribucion">
+      @for (d of distribucion; track d.etiqueta) {
+        <div class="dist__row">
+          <span class="dist__label">{{ d.etiqueta }}</span>
+          <div class="dist__bar">
+            <div class="dist__fill" [style.width.%]="d.porcentaje"></div>
+          </div>
+          <span class="dist__value">{{ d.porcentaje }}%</span>
+        </div>
+      }
+    </div>
+  </ui-card>
+</section>

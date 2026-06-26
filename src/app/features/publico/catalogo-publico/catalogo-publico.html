@@ -1,0 +1,145 @@
+<section class="cat-head">
+  <div class="cat-head__text">
+    <h1 class="hc-h1">Mascotas en adopción</h1>
+    <p class="hc-body">Filtra, busca y conoce a las mascotas que esperan un hogar.</p>
+  </div>
+  <button mat-flat-button color="primary" type="button" (click)="abrirIa()">
+    <mat-icon>auto_awesome</mat-icon>
+    Recomendación IA
+  </button>
+</section>
+
+<div class="cat-wrap">
+  <!-- ===== Filtros ===== -->
+  <aside class="filtros">
+    <mat-form-field appearance="outline" class="filtros__busqueda">
+      <mat-label>Buscar por nombre o ciudad</mat-label>
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput [value]="busqueda()" (input)="onBusqueda($any($event.target).value)" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Especie</mat-label>
+      <mat-select [value]="filtroEspecie()" (valueChange)="filtroEspecie.set($event)">
+        <mat-option [value]="null">Todas</mat-option>
+        @for (e of especies(); track e.id) {
+          <mat-option [value]="e.id">{{ e.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Tamaño</mat-label>
+      <mat-select [value]="filtroTamano()" (valueChange)="filtroTamano.set($event)">
+        <mat-option [value]="null">Cualquiera</mat-option>
+        @for (t of tamanos(); track t.id) {
+          <mat-option [value]="t.id">{{ t.nombre }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ubicación</mat-label>
+      <mat-select [value]="filtroUbicacion()" (valueChange)="filtroUbicacion.set($event)">
+        <mat-option [value]="null">Todas</mat-option>
+        @for (u of ubicaciones(); track u) {
+          <mat-option [value]="u">{{ u }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Edad</mat-label>
+      <mat-select [value]="filtroEdad()" (valueChange)="filtroEdad.set($event)">
+        <mat-option [value]="null">Cualquiera</mat-option>
+        @for (r of rangosEdad; track r.valor) {
+          <mat-option [value]="r.valor">{{ r.etiqueta }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sexo</mat-label>
+      <mat-select [value]="filtroSexo()" (valueChange)="filtroSexo.set($event)">
+        <mat-option [value]="null">Cualquiera</mat-option>
+        <mat-option value="M">Macho</mat-option>
+        <mat-option value="H">Hembra</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ordenar por</mat-label>
+      <mat-select [value]="orden()" (valueChange)="orden.set($event)">
+        <mat-option value="recientes">Más recientes</mat-option>
+        <mat-option value="edad">Edad</mat-option>
+        <mat-option value="urgencia">Urgencia</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-stroked-button type="button" (click)="limpiarFiltros()">
+      <mat-icon>filter_alt_off</mat-icon>
+      Limpiar filtros
+    </button>
+  </aside>
+
+  <!-- ===== Resultados ===== -->
+  <div class="resultados">
+    @if (cargando()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+
+    @if (!cargando()) {
+      <p class="resultados__conteo hc-caption">{{ mascotas().length }} mascota(s) encontrada(s)</p>
+    }
+
+    @if (!cargando() && mascotas().length === 0) {
+      <ui-card>
+        <ui-empty-state
+          icono="search"
+          titulo="No hay mascotas con estos filtros"
+          mensaje="Ajusta los filtros o limpia la búsqueda para ver más resultados."
+        />
+      </ui-card>
+    }
+
+    <div class="grid">
+      @for (m of mascotas(); track m.id) {
+        <ui-card [hover]="true" [flush]="true">
+          <button class="card-link" type="button" (click)="verPerfil(m)">
+            <div class="foto">
+              @if (m.foto_principal) {
+                <img [src]="m.foto_principal" [alt]="m.nombre" />
+              } @else {
+                <mat-icon class="sin-foto">pets</mat-icon>
+              }
+              @if (urgente(m)) {
+                <span class="urgente"><mat-icon>priority_high</mat-icon> Urgente</span>
+              }
+            </div>
+
+            <div class="cuerpo">
+              <h3 class="hc-h3">{{ m.nombre }}</h3>
+              <p class="hc-caption especie">{{ m.especie }}@if (m.raza) { · {{ m.raza }} }</p>
+
+              <div class="chips">
+                <span class="chip">{{ edad(m) }}</span>
+                @if (m.tamano) { <span class="chip">{{ m.tamano }}</span> }
+                <span class="chip">{{ sexo(m.sexo) }}</span>
+              </div>
+
+              <p class="ubicacion hc-caption">
+                <mat-icon>place</mat-icon> {{ ubicacion(m) }}
+              </p>
+            </div>
+          </button>
+
+          <div class="acciones">
+            <button mat-flat-button color="primary" (click)="verPerfil(m)">
+              <mat-icon>favorite</mat-icon> Conóceme
+            </button>
+          </div>
+        </ui-card>
+      }
+    </div>
+  </div>
+</div>
