@@ -44,6 +44,8 @@
           },
           "configurations": {
             "production": {
+              "outputMode": "static",
+              "prerender": false,
               "budgets": [
                 {
                   "type": "initial",
