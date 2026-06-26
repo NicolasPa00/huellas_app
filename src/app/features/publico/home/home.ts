@@ -30,6 +30,51 @@ export class HomePublico implements OnInit {
   readonly pasos = PASOS_ADOPCION;
   readonly testimonios = TESTIMONIOS;
 
+  // Contenido meramente informativo (visión a futuro · no implementado).
+  readonly trazabilidad = [
+    {
+      icono: 'fingerprint',
+      titulo: 'Identidad única',
+      texto: 'Cada mascota tendría un identificador biométrico irrepetible asociado a su historia.',
+    },
+    {
+      icono: 'travel_explore',
+      titulo: 'Trazabilidad real',
+      texto: 'Seguimiento confiable del animal a lo largo de toda su vida: origen, adopción y cuidados.',
+    },
+    {
+      icono: 'verified_user',
+      titulo: 'Recuperación ágil',
+      texto: 'En caso de pérdida o robo, el chip/tatuaje facilitaría reunir a la mascota con su familia.',
+    },
+    {
+      icono: 'gpp_good',
+      titulo: 'Menos abandono',
+      texto: 'La identificación responsabiliza la tenencia y desincentiva el abandono.',
+    },
+  ];
+
+  // Marco normativo que respalda iniciativas de bienestar, registro e identificación.
+  readonly marcoLegal = [
+    {
+      norma: 'Ley 84 de 1989',
+      detalle: 'Estatuto Nacional de Protección de los Animales: deberes de cuidado y trato digno.',
+    },
+    {
+      norma: 'Ley 1774 de 2016',
+      detalle: 'Reconoce a los animales como seres sintientes y tipifica el maltrato como delito.',
+    },
+    {
+      norma: 'Ley 1801 de 2016',
+      detalle: 'Código de Seguridad y Convivencia: tenencia responsable y registro de animales de compañía.',
+    },
+    {
+      norma: 'Políticas públicas territoriales',
+      detalle:
+        'Programas de bienestar animal (nacionales y municipales, como en Pasto) y proyectos de ley que impulsan el censo, registro e identificación con microchip.',
+    },
+  ];
+
   ngOnInit(): void {
     this.publicoService.estadisticas().subscribe({ next: (res) => this.stats.set(res.data) });
     this.publicoService.mascotas().subscribe({

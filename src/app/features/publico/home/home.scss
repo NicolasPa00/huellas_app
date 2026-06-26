@@ -294,3 +294,153 @@ section {
   color: var(--hc-color-text-muted);
   margin: var(--hc-space-xs) 0 var(--hc-space-lg);
 }
+
+/* ===== Aviso de prototipo (franja superior) ===== */
+.proto-banner {
+  max-width: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--hc-space-sm);
+  padding: 10px var(--hc-space-lg);
+  background: #fdf3d8;
+  color: #8a6d1b;
+  border-bottom: 1px solid #f0e0a8;
+}
+.proto-banner mat-icon {
+  color: #b8860b;
+  flex-shrink: 0;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+.proto-banner p {
+  margin: 0;
+  font: var(--hc-text-caption);
+  text-align: center;
+}
+
+/* ===== Visión a futuro: trazabilidad biométrica ===== */
+.futuro__intro {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto var(--hc-space-lg);
+}
+.futuro__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--hc-text-label);
+  color: var(--hc-color-info);
+  background: var(--hc-color-info-soft);
+  border-radius: var(--hc-radius-pill);
+  padding: 4px 14px;
+  margin-bottom: var(--hc-space-sm);
+}
+.futuro__badge mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.futuro__intro .hc-body {
+  color: var(--hc-color-text-muted);
+  margin-top: var(--hc-space-sm);
+}
+.futuro__nota {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--hc-space-md);
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-subtle);
+}
+.futuro__nota mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+}
+.futuro__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--hc-space-md);
+  text-align: center;
+}
+.futuro__grid h3 {
+  margin-bottom: 4px;
+}
+.futuro__icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--hc-space-sm);
+  border-radius: var(--hc-radius-pill);
+  display: grid;
+  place-items: center;
+  background: var(--hc-color-primary-soft);
+  color: var(--hc-color-primary);
+}
+.futuro__icon mat-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+/* Bloque legal */
+.legal {
+  margin-top: var(--hc-space-xl);
+  background: var(--hc-color-surface);
+  border: 1px solid var(--hc-color-border);
+  border-left: 4px solid var(--hc-color-primary);
+  border-radius: var(--hc-radius-lg);
+  box-shadow: var(--hc-shadow-sm);
+  padding: var(--hc-space-lg);
+}
+.legal__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--hc-space-xs);
+}
+.legal__titulo mat-icon {
+  color: var(--hc-color-primary);
+}
+.legal__lista {
+  list-style: none;
+  margin: var(--hc-space-md) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--hc-space-md);
+}
+.legal__lista li {
+  position: relative;
+  padding-left: var(--hc-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.legal__lista li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hc-color-primary);
+}
+.legal__norma {
+  font: var(--hc-text-label);
+  font-weight: 700;
+  color: var(--hc-color-primary-strong);
+}
+.legal__detalle {
+  font: var(--hc-text-body);
+  color: var(--hc-color-text-muted);
+}
+.legal__pie {
+  font: var(--hc-text-caption);
+  color: var(--hc-color-text-subtle);
+  margin-top: var(--hc-space-md);
+  padding-top: var(--hc-space-md);
+  border-top: 1px solid var(--hc-color-border);
+}

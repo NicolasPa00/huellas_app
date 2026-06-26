@@ -1,3 +1,12 @@
+<!-- ===== Aviso de prototipo ===== -->
+<div class="proto-banner" role="note">
+  <mat-icon>science</mat-icon>
+  <p>
+    <strong>Versión prototipo (MVP).</strong> Esta plataforma es una demostración: algunas
+    funciones e información son ilustrativas y siguen en evolución.
+  </p>
+</div>
+
 <!-- ===== Hero ===== -->
 <section class="hero">
   <div class="hero__inner">
@@ -160,6 +169,53 @@
         <p class="testimonio__autor">{{ t.emoji }} {{ t.adoptante }} adoptó a {{ t.mascota }} · {{ t.ciudad }}</p>
       </ui-card>
     }
+  </div>
+</section>
+
+<!-- ===== Visión a futuro: identificación biométrica y trazabilidad ===== -->
+<section class="bloque futuro">
+  <div class="futuro__intro">
+    <span class="futuro__badge"><mat-icon>upcoming</mat-icon> Próximamente · En exploración</span>
+    <h2 class="hc-h2">Identificación biométrica para una trazabilidad real</h2>
+    <p class="hc-body">
+      Hoy la trazabilidad y el registro de las mascotas son limitados. A futuro, y con el apoyo de
+      iniciativas gubernamentales, buscamos integrar <strong>chips y tatuajes de identificación
+      biométrica</strong>: cada animal tendría una identidad única y verificable que permita un
+      registro y seguimiento confiables durante toda su vida.
+    </p>
+    <p class="futuro__nota">
+      <mat-icon>info</mat-icon> Funcionalidad aún no desarrollada; se presenta únicamente con fines
+      informativos.
+    </p>
+  </div>
+
+  <div class="futuro__grid">
+    @for (b of trazabilidad; track b.titulo) {
+      <ui-card>
+        <div class="futuro__icon"><mat-icon>{{ b.icono }}</mat-icon></div>
+        <h3 class="hc-h3">{{ b.titulo }}</h3>
+        <p class="hc-caption">{{ b.texto }}</p>
+      </ui-card>
+    }
+  </div>
+
+  <div class="legal">
+    <h3 class="legal__titulo"><mat-icon>gavel</mat-icon> Lineamientos legales que respaldan la iniciativa</h3>
+    <p class="hc-caption">
+      Una identificación y registro como este se enmarca en la normativa de bienestar animal:
+    </p>
+    <ul class="legal__lista">
+      @for (l of marcoLegal; track l.norma) {
+        <li>
+          <span class="legal__norma">{{ l.norma }}</span>
+          <span class="legal__detalle">{{ l.detalle }}</span>
+        </li>
+      }
+    </ul>
+    <p class="legal__pie">
+      El despliegue de chips/tatuajes dependería de convenios y apoyos gubernamentales, conforme a
+      la normativa vigente y a las políticas de protección animal del territorio.
+    </p>
   </div>
 </section>
 
