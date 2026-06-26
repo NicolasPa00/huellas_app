@@ -58,6 +58,21 @@ ui-card {
   display: flex;
   align-items: center;
   gap: var(--hc-space-xs);
+  flex-wrap: wrap;
+}
+
+/* En móvil el logo (letra inicial) se reduce para no desplazar el contenido. */
+@media (max-width: 560px) {
+  .cabecera {
+    gap: var(--hc-space-md);
+  }
+  .cabecera__logo {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--hc-radius-md);
+    font-size: 1.4rem;
+    line-height: 1;
+  }
 }
 .verificado {
   color: var(--hc-color-info);
